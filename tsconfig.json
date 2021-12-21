@@ -10,6 +10,11 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@application/*":["src/application/*"],
+      "@infrastructure/*":["src/infrastructure/*"],
+      "@domain/*":["src/domain/*"],
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
