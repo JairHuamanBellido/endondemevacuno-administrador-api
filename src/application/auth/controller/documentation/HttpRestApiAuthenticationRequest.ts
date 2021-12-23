@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class HttpRestApiAuthenticationRequest {
   @ApiProperty()
@@ -11,9 +11,4 @@ export class HttpRestApiAuthenticationRequest {
   @IsString()
   @IsNotEmpty()
   public password: string;
-
-  @ApiProperty()
-  @IsBoolean()
-  @IsNotEmpty()
-  public isAdmin: boolean;
 }

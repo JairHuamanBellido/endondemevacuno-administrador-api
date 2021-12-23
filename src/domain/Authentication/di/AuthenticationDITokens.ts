@@ -1,7 +1,7 @@
 export class AuthenticationDITokens {
   // Service
-  public static readonly AuthenticationService: unique symbol = Symbol(
-    'AuthenticationService',
+  public static readonly AuthenticationAdminService: unique symbol = Symbol(
+    'AuthenticationAdminService',
   );
 
   public static readonly HttpJwtStrategy: unique symbol =

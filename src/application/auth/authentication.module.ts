@@ -1,7 +1,7 @@
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
 import { IAccountRepository } from '@domain/Authentication/interface/IAccountRepository.interface';
 import { HttpJwtStrategy } from '@domain/Authentication/security/passport/HttpJwtStrategy';
-import { AuthenticationService } from '@domain/Authentication/service/AuthenticationService';
+import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { SystemConfig } from '@infrastructure/config/SystemConfig';
 import { TypeormAccountRepository } from '@infrastructure/database/repositories/AccountRepository';
 import { Module, Provider } from '@nestjs/common';
@@ -21,18 +21,18 @@ const persistenceProviders: Provider[] = [
 
 const serviceProviders: Provider[] = [
   {
-    provide: AuthenticationDITokens.AuthenticationService,
+    provide: AuthenticationDITokens.AuthenticationAdminService,
     useFactory: (
       accountRepository: IAccountRepository,
       jwtService: JwtService,
-    ) => new AuthenticationService(accountRepository, jwtService),
+    ) => new AuthenticationAdminService(accountRepository, jwtService),
     inject: [AuthenticationDITokens.IAccountRepository, JwtService],
   },
   {
     provide: AuthenticationDITokens.HttpJwtStrategy,
-    useFactory: (authenticationService: AuthenticationService) =>
+    useFactory: (authenticationService: AuthenticationAdminService) =>
       new HttpJwtStrategy(authenticationService),
-    inject: [AuthenticationDITokens.AuthenticationService],
+    inject: [AuthenticationDITokens.AuthenticationAdminService],
   },
 ];
 

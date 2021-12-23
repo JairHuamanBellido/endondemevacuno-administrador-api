@@ -1,5 +1,5 @@
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
-import { AuthenticationService } from '@domain/Authentication/service/AuthenticationService';
+import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { Body, Controller, HttpStatus, Inject, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpError } from 'src/core/types/HttpError';
@@ -10,8 +10,8 @@ import { HttpRestApiAuthenticationResponse } from './documentation/HttpRestApiAu
 @Controller('authentication')
 export class AuthenticationController {
   constructor(
-    @Inject(AuthenticationDITokens.AuthenticationService)
-    private readonly authenticationService: AuthenticationService,
+    @Inject(AuthenticationDITokens.AuthenticationAdminService)
+    private readonly authenticationAdminService: AuthenticationAdminService,
   ) {}
 
   @ApiResponse({
@@ -24,10 +24,10 @@ export class AuthenticationController {
     description: 'Credentials are incorrect',
     type: HttpError,
   })
-  @Post('/')
+  @Post('/admin')
   public async authentication(
     @Body() body: HttpRestApiAuthenticationRequest,
   ): Promise<HttpRestApiAuthenticationResponse> {
-    return await this.authenticationService.execute(body);
+    return await this.authenticationAdminService.execute(body);
   }
 }
