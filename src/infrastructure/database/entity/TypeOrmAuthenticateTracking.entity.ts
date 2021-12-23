@@ -1,15 +1,9 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { TypeOrmResponsable } from './TypeOrmResponsable.entity';
 
 @Entity({ name: 'authenticate_tracking' })
 export class TypeOrmAuthenticateTracking {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @OneToOne(() => TypeOrmResponsable)

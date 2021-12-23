@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { TypeOrmInventory } from './TypeOrmInventory.entity';
 
 @Entity({ name: 'vaccine' })
 export class TypeOrmVaccine {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @OneToMany(() => TypeOrmInventory, (inventory) => inventory.vaccines)

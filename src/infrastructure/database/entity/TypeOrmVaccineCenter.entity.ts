@@ -5,7 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { TypeOrmInventory } from './TypeOrmInventory.entity';
 import { TypeOrmResponsable } from './TypeOrmResponsable.entity';
@@ -13,7 +13,7 @@ import { TypeOrmUbigeo } from './TypeOrmUbigeo.entity';
 
 @Entity({ name: 'vaccine_center' })
 export class TypeOrmVaccineCenter {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @OneToOne(() => TypeOrmResponsable)

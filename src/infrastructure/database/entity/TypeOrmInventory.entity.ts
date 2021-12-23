@@ -1,16 +1,10 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { TypeOrmVaccine } from './TypeOrmVaccine.entity';
 import { TypeOrmVaccineCenter } from './TypeOrmVaccineCenter.entity';
 
 @Entity({ name: 'inventory' })
 export class TypeOrmInventory {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @ManyToOne(

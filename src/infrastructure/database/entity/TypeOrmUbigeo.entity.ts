@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { TypeOrmVaccineCenter } from './TypeOrmVaccineCenter.entity';
 
 @Entity({ name: 'ubigeo' })
 export class TypeOrmUbigeo {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Column({ name: 'department', type: 'varchar', length: 255 })

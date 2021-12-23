@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'account' })
 export class TypeOrmAccount {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Column({ name: 'email', type: 'varchar', length: 255 })
@@ -12,7 +12,7 @@ export class TypeOrmAccount {
   password: string;
 
   @Column({ name: 'is_admin', type: 'bool' })
-  is_adming: string;
+  is_admin: boolean;
 
   @Column({ name: 'created_at', type: 'time without time zone' })
   created_at: Date;

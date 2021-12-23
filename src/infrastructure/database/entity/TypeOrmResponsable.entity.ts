@@ -1,15 +1,9 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { TypeOrmAccount } from './TypeOrmAccount.entity';
 
 @Entity({ name: 'responsable' })
 export class TypeOrmResponsable {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @OneToOne(() => TypeOrmAccount)
