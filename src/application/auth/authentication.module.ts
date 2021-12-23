@@ -1,7 +1,6 @@
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
 import { IAccountRepository } from '@domain/Authentication/interface/IAccountRepository.interface';
 import { HttpJwtStrategy } from '@domain/Authentication/security/passport/HttpJwtStrategy';
-import { HttpLocalStrategy } from '@domain/Authentication/security/passport/HttpLocalStrategy';
 import { AuthenticationService } from '@domain/Authentication/service/AuthenticationService';
 import { SystemConfig } from '@infrastructure/config/SystemConfig';
 import { TypeormAccountRepository } from '@infrastructure/database/repositories/AccountRepository';
@@ -11,7 +10,6 @@ import { PassportModule } from '@nestjs/passport';
 import { Connection } from 'typeorm';
 import { AuthenticationController } from './controller/authentication.controller';
 
-const defaultProvider: Provider[] = [HttpJwtStrategy, HttpLocalStrategy];
 const persistenceProviders: Provider[] = [
   {
     provide: AuthenticationDITokens.IAccountRepository,
@@ -30,6 +28,12 @@ const serviceProviders: Provider[] = [
     ) => new AuthenticationService(accountRepository, jwtService),
     inject: [AuthenticationDITokens.IAccountRepository, JwtService],
   },
+  {
+    provide: AuthenticationDITokens.HttpJwtStrategy,
+    useFactory: (authenticationService: AuthenticationService) =>
+      new HttpJwtStrategy(authenticationService),
+    inject: [AuthenticationDITokens.AuthenticationService],
+  },
 ];
 
 @Module({
@@ -38,6 +42,6 @@ const serviceProviders: Provider[] = [
     JwtModule.register({ secret: SystemConfig.JWT_KEY }),
   ],
   controllers: [AuthenticationController],
-  providers: [...defaultProvider, ...persistenceProviders, ...serviceProviders],
+  providers: [...persistenceProviders, ...serviceProviders],
 })
 export class AuthenticationModule {}

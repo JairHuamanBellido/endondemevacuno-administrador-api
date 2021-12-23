@@ -5,6 +5,8 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpError } from 'src/core/types/HttpError';
 import { HttpRestApiAuthenticationRequest } from './documentation/HttpRestApiAuthenticationRequest';
 import { HttpRestApiAuthenticationResponse } from './documentation/HttpRestApiAuthenticationResponse';
+
+@ApiTags('Authentication')
 @Controller('authentication')
 export class AuthenticationController {
   constructor(
@@ -12,7 +14,6 @@ export class AuthenticationController {
     private readonly authenticationService: AuthenticationService,
   ) {}
 
-  @ApiTags('Authentication')
   @ApiResponse({
     status: 201,
     description: 'Credentials are correct',

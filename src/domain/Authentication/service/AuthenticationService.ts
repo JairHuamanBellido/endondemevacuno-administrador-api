@@ -36,4 +36,8 @@ export class AuthenticationService {
       userId: account.id,
     };
   }
+  public async validateAccount(id: string) {
+    const account = await this.accountRepository.getBy({ id: id });
+    return account;
+  }
 }
