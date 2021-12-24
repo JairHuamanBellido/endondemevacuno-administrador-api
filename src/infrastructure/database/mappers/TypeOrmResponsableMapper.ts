@@ -23,4 +23,16 @@ export class TypeOrmResponsableMapper {
   ): Responsable[] {
     return ormResponsables.map((e) => this.toDomainEntity(e));
   }
+
+  public static toOrmEntity(responsable: Responsable): TypeOrmResponsable {
+    return {
+      account: TypeOrmAccountMapper.toOrmEntity(responsable.account),
+      created_at: responsable.createdAt,
+      dni: responsable.dni,
+      id: responsable.id,
+      is_enabled: responsable.isEnabled,
+      lastname: responsable.lastname,
+      name: responsable.name,
+    };
+  }
 }

@@ -1,5 +1,5 @@
 import { QueryAccountDto } from '@domain/Authentication/dto/infrastructure/QueryAccountDto';
-import { IAccountRepository } from '@domain/Authentication/interface/IAccountRepository.interface';
+import { IAccountRepository } from '@domain/Account/interface/IAccountRepository.interface';
 import { Account } from '@domain/Authentication/model/Account';
 import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { TypeOrmAccount } from '../entity/TypeOrmAccount.entity';
@@ -24,6 +24,28 @@ export abstract class TypeormAccountRepository
       domainAccount = TypeOrmAccountMapper.toDomainEntity(ormAccount);
     }
     return domainAccount;
+  }
+
+  public async createEntity(domainAccount: Account): Promise<Account> {
+    const ormAccount: TypeOrmAccount =
+      TypeOrmAccountMapper.toOrmEntity(domainAccount);
+
+    const newEntity = await this.createQueryBuilder(this.accountAlias)
+      .insert()
+      .into(TypeOrmAccount)
+      .values([ormAccount])
+      .execute();
+
+    const query: AccountQueryBuilder = this.buildAccountQueryBuilder();
+
+    this.extendQueryWithByProperties(
+      { id: newEntity.identifiers[0].id },
+      query,
+    );
+
+    const ormEntity: TypeOrmAccount = await query.getOne();
+
+    return TypeOrmAccountMapper.toDomainEntity(ormEntity);
   }
 
   private buildAccountQueryBuilder(): AccountQueryBuilder {

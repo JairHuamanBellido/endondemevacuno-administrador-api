@@ -1,6 +1,6 @@
 import { Account } from '@domain/Authentication/model/Account';
 
-export interface CreateResponsableEntityPayload {
+export type CreateResponsableEntityPayload = {
   id: string;
   dni: string;
   name: string;
@@ -8,4 +8,4 @@ export interface CreateResponsableEntityPayload {
   isEnabled: boolean;
   createdAt: Date;
   account: Account;
-}
+};

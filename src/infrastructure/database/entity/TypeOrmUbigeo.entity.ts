@@ -15,7 +15,7 @@ export class TypeOrmUbigeo {
   @Column({ name: 'district', type: 'varchar', length: 255 })
   district: string;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 
   @OneToMany(

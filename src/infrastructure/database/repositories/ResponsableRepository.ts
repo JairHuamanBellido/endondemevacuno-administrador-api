@@ -24,11 +24,88 @@ export abstract class TypeormResponsableRepository
     return TypeOrmResponsableMapper.toDomainsEntities(ormResponsables);
   }
 
+  public async getBy(searchBy: QueryResponsableDto): Promise<Responsable> {
+    let domainResponsable: Responsable;
+    const query: ResponsableQueryBuilder = this.buildAccountQueryBuilder();
+    this.extendQueryWithFindByAllCoincidence(query, searchBy);
+
+    const ormResponable: TypeOrmResponsable = await query
+      .leftJoinAndSelect('responsable.account', 'account')
+      .getOne();
+
+    if (domainResponsable) {
+      domainResponsable =
+        TypeOrmResponsableMapper.toDomainEntity(ormResponable);
+    }
+    return domainResponsable;
+  }
+
+  public async findBy(searchBy: QueryResponsableDto): Promise<Responsable[]> {
+    const query: ResponsableQueryBuilder = this.buildAccountQueryBuilder();
+    this.extendQueryWithFindByAnyCoincidence(query, searchBy);
+
+    const ormResponable: TypeOrmResponsable[] = await query
+      .leftJoinAndSelect('responsable.account', 'account')
+      .getMany();
+
+    return TypeOrmResponsableMapper.toDomainsEntities(ormResponable);
+  }
+
+  public async createEntity(responable: Responsable): Promise<Responsable> {
+    const ormResponable = TypeOrmResponsableMapper.toOrmEntity(responable);
+    const newEntity = await this.createQueryBuilder(this.responsableAlias)
+      .insert()
+      .into(TypeOrmResponsable)
+      .values([ormResponable])
+      .execute();
+
+    const query: ResponsableQueryBuilder = this.buildAccountQueryBuilder();
+    this.extendQueryWithFindByAllCoincidence(query, {
+      id: newEntity.identifiers[0].id,
+    });
+    const ormEntity: TypeOrmResponsable = await query
+      .leftJoinAndSelect('responsable.account', 'account')
+      .getOne();
+    return TypeOrmResponsableMapper.toDomainEntity(ormEntity);
+  }
   private buildAccountQueryBuilder(): ResponsableQueryBuilder {
     return this.createQueryBuilder(this.responsableAlias).select();
   }
 
-  private extendQueryWithByProperties(
+  private extendQueryWithFindByAnyCoincidence(
+    query: ResponsableQueryBuilder,
+    by?: QueryResponsableDto,
+  ) {
+    if (by.id) {
+      query.orWhere(`"${this.responsableAlias}".id = :id`, { id: by.id });
+    }
+
+    if (by.createdAt) {
+      query.orWhere(`"${this.responsableAlias}".created_at = :created_at`, {
+        created_at: by.createdAt,
+      });
+    }
+    if (by.dni) {
+      query.orWhere(`"${this.responsableAlias}".dni = :dni`, { dni: by.dni });
+    }
+    if (by.isEnabled) {
+      query.orWhere(`"${this.responsableAlias}".is_enabled = :is_enabled`, {
+        is_enabled: by.isEnabled,
+      });
+    }
+    if (by.lastname) {
+      query.orWhere(`"${this.responsableAlias}".lastname = :lastname`, {
+        lastname: by.lastname,
+      });
+    }
+    if (by.name) {
+      query.orWhere(`"${this.responsableAlias}".name = :name`, {
+        name: by.name,
+      });
+    }
+  }
+
+  private extendQueryWithFindByAllCoincidence(
     query: ResponsableQueryBuilder,
     by?: QueryResponsableDto,
   ) {

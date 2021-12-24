@@ -22,6 +22,6 @@ export class TypeOrmResponsable {
   @Column({ name: 'is_enabled', type: 'boolean' })
   is_enabled: boolean;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 }

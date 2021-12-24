@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRole } from 'src/core/enums/UsersRoleEnum';
 import { AuthenticationRequestDto as Payload } from '../dto/application/AuthenticationRequestDto';
 import { AuthenticationResponseDto as Response } from '../dto/application/AuthenticationResponseDto';
-import { IAccountRepository } from '../interface/IAccountRepository.interface';
+import { IAccountRepository } from '../../Account/interface/IAccountRepository.interface';
 import { Account } from '../model/Account';
 import { HttpJwtPayload } from '../security/type/HttpAuthType';
 import { HttpError } from '@core/types/HttpError';

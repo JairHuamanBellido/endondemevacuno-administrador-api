@@ -1,5 +1,5 @@
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
-import { IAccountRepository } from '@domain/Authentication/interface/IAccountRepository.interface';
+import { IAccountRepository } from '@domain/Account/interface/IAccountRepository.interface';
 import { HttpJwtStrategy } from '@domain/Authentication/security/passport/HttpJwtStrategy';
 import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { SystemConfig } from '@infrastructure/config/SystemConfig';

@@ -13,6 +13,6 @@ export class TypeOrmAuthenticateTracking {
   @Column({ name: 'result', type: 'bool' })
   result: boolean;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 }

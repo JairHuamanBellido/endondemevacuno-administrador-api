@@ -44,6 +44,6 @@ export class TypeOrmVaccineCenter {
   @Column({ name: 'diris', type: 'varchar', length: 50 })
   diris: string;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 }

@@ -14,6 +14,6 @@ export class TypeOrmAccount {
   @Column({ name: 'is_admin', type: 'bool' })
   is_admin: boolean;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 }

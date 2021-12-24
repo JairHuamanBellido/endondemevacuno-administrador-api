@@ -21,6 +21,6 @@ export class TypeOrmInventory {
   @Column({ name: 'quantity', type: 'int' })
   quantity: number;
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
+  @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 }
