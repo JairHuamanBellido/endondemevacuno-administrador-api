@@ -24,7 +24,8 @@ export class ResponsableAdapter {
   @ApiProperty()
   public isEnabled: boolean;
 
-  @Exclude()
+  @Expose()
+  @ApiProperty()
   public createdAt: Date;
 
   @Expose()
