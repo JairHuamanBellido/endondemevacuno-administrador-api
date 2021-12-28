@@ -12,6 +12,10 @@ export class ResponsableDITokens {
     'GenerateCredentialService',
   );
 
+  public static readonly UpdateResponsableService: unique symbol = Symbol(
+    'UpdateResponsableService',
+  );
+
   // Repository
   public static readonly IResponsableRepository: unique symbol = Symbol(
     'IResponsableRepository',

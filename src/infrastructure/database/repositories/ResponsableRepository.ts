@@ -33,13 +33,25 @@ export abstract class TypeormResponsableRepository
       .leftJoinAndSelect('responsable.account', 'account')
       .getOne();
 
-    if (domainResponsable) {
+    if (ormResponable) {
       domainResponsable =
         TypeOrmResponsableMapper.toDomainEntity(ormResponable);
     }
     return domainResponsable;
   }
 
+  public async updateEntity(responsable: Responsable): Promise<Responsable> {
+    const ormResponsable: TypeOrmResponsable =
+      TypeOrmResponsableMapper.toOrmEntity(responsable);
+
+    await this.createQueryBuilder(this.responsableAlias)
+      .update(TypeOrmResponsable)
+      .set(ormResponsable)
+      .where('id = :id', { id: ormResponsable.id })
+      .execute();
+
+    return await this.getBy({ id: responsable.id });
+  }
   public async findBy(searchBy: QueryResponsableDto): Promise<Responsable[]> {
     const query: ResponsableQueryBuilder = this.buildAccountQueryBuilder();
     this.extendQueryWithFindByAnyCoincidence(query, searchBy);

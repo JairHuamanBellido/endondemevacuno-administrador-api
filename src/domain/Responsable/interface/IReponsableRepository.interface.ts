@@ -6,4 +6,5 @@ export interface IResponsableRepository {
   getAll(): Promise<Responsable[]>;
   createEntity(responable: Responsable): Promise<Responsable>;
   findBy(queryResponsableDto: QueryResponsableDto): Promise<Responsable[]>;
+  updateEntity(responsable: Responsable): Promise<Responsable>;
 }

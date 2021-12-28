@@ -1,3 +1,4 @@
+import { HttpRestApiUpdateResponsable } from '@application/responsable/documentation/HttpRestApiUpdateResponsable';
 import { Account } from '@domain/Authentication/model/Account';
 import { CreateResponsableEntityPayload } from './types/CreateResponsableEntityPayload';
 
@@ -39,6 +40,9 @@ export class Responsable {
   get isEnabled(): boolean {
     return this._isEnabled;
   }
+  set isEnabled(isEnabled: boolean) {
+    this._isEnabled = isEnabled;
+  }
 
   get createdAt(): Date {
     return this._createdAt;
@@ -50,5 +54,11 @@ export class Responsable {
 
   set account(account: Account) {
     this._account = account;
+  }
+
+  public edit(payload: HttpRestApiUpdateResponsable) {
+    if (payload.isEnabled !== undefined) this.isEnabled = payload.isEnabled;
+    if (payload.lastname !== undefined) this._lastname = payload.lastname;
+    if (payload.name !== undefined) this._name = payload.name;
   }
 }

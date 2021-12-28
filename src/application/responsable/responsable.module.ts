@@ -6,6 +6,7 @@ import { IResponsableRepository } from '@domain/Responsable/interface/IReponsabl
 import { CreateResponsableService } from '@domain/Responsable/service/CreateResponsableService';
 import { GenerateCredentialService } from '@domain/Responsable/service/GenerateCredentialsService';
 import { GetAllResponsableService } from '@domain/Responsable/service/GetAllResponsablesService';
+import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
 import { SendgridAdapter } from '@infrastructure/adapters/SendgridAdapter';
 import { TypeormAccountRepository } from '@infrastructure/database/repositories/AccountRepository';
 import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
@@ -30,6 +31,9 @@ const persistenceProvider: Provider[] = [
     provide: ResponsableDITokens.SendgridRepository,
     useClass: SendgridAdapter,
   },
+];
+
+const serviceProviders: Provider[] = [
   {
     provide: AccountDITokens.CreateAccountService,
     useFactory: (accountRepository: IAccountRepository) =>
@@ -42,9 +46,6 @@ const persistenceProvider: Provider[] = [
       new GenerateCredentialService(sendgridAdapter),
     inject: [ResponsableDITokens.SendgridRepository],
   },
-];
-
-const serviceProviders: Provider[] = [
   {
     provide: ResponsableDITokens.GetAllResponsablesService,
     useFactory: (responsableRepository: IResponsableRepository) =>
@@ -68,6 +69,12 @@ const serviceProviders: Provider[] = [
       AccountDITokens.CreateAccountService,
       ResponsableDITokens.GenerateCredentialService,
     ],
+  },
+  {
+    provide: ResponsableDITokens.UpdateResponsableService,
+    useFactory: (responsableRepository: IResponsableRepository) =>
+      new UpdateResponsableService(responsableRepository),
+    inject: [ResponsableDITokens.IResponsableRepository],
   },
 ];
 @Module({

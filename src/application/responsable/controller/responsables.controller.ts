@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Inject,
   Post,
+  Put,
 } from '@nestjs/common';
 import { GetAllResponsableService } from '@domain/Responsable/service/GetAllResponsablesService';
 import { HttpAuth } from '@domain/Authentication/security/decorator/HttpAuth';
@@ -14,6 +15,8 @@ import { ResponsableAdapter } from '@infrastructure/adapters/ManagerAdapter';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpRestApiCreateResponsable } from '../documentation/HttpRestApiCreateResponsable';
 import { CreateResponsableService } from '@domain/Responsable/service/CreateResponsableService';
+import { HttpRestApiUpdateResponsable } from '../documentation/HttpRestApiUpdateResponsable';
+import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
 @ApiTags('responsables')
 @Controller('responsables')
 export class ResponsablesController {
@@ -22,6 +25,8 @@ export class ResponsablesController {
     private readonly getAllResponsablesService: GetAllResponsableService,
     @Inject(ResponsableDITokens.CreateResponsableService)
     private readonly createResponsableService: CreateResponsableService,
+    @Inject(ResponsableDITokens.UpdateResponsableService)
+    private readonly updateResponsableService: UpdateResponsableService,
   ) {}
 
   @ApiResponse({
@@ -49,6 +54,20 @@ export class ResponsablesController {
     @Body() body: HttpRestApiCreateResponsable,
   ): Promise<ResponsableAdapter> {
     const responsable = await this.createResponsableService.execute(body);
+    return ResponsableAdapter.newFromResponsable(responsable);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: 'Update account status of responsable',
+    type: ResponsableAdapter,
+  })
+  @HttpAuth(UserRole.ADMIN)
+  @Put('/')
+  public async updateResponsable(
+    @Body() body: HttpRestApiUpdateResponsable,
+  ): Promise<ResponsableAdapter> {
+    const responsable = await this.updateResponsableService.execute(body);
     return ResponsableAdapter.newFromResponsable(responsable);
   }
 }
