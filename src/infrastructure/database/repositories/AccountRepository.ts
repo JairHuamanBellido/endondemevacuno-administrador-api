@@ -69,7 +69,7 @@ export abstract class TypeormAccountRepository
         password: by.password,
       });
     }
-    if (by.isAdmin) {
+    if (by.isAdmin !== undefined) {
       query.andWhere(`"${this.accountAlias}".is_admin = :is_admin`, {
         is_admin: by.isAdmin,
       });

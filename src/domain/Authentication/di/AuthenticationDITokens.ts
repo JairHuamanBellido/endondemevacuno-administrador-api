@@ -4,6 +4,9 @@ export class AuthenticationDITokens {
     'AuthenticationAdminService',
   );
 
+  public static readonly AuthenticationResponsableService: unique symbol =
+    Symbol('AuthenticationResponsableService');
+
   public static readonly HttpJwtStrategy: unique symbol =
     Symbol('HttpJwtStrategy');
 

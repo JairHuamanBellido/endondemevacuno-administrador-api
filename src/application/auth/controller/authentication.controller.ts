@@ -1,5 +1,6 @@
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
 import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
+import { AuthenticationResponsableService } from '@domain/Authentication/service/AuthenticationResponsableService';
 import { Body, Controller, HttpStatus, Inject, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpError } from 'src/core/types/HttpError';
@@ -12,6 +13,8 @@ export class AuthenticationController {
   constructor(
     @Inject(AuthenticationDITokens.AuthenticationAdminService)
     private readonly authenticationAdminService: AuthenticationAdminService,
+    @Inject(AuthenticationDITokens.AuthenticationResponsableService)
+    private readonly authenticationResponsableService: AuthenticationResponsableService,
   ) {}
 
   @ApiResponse({
@@ -29,5 +32,12 @@ export class AuthenticationController {
     @Body() body: HttpRestApiAuthenticationRequest,
   ): Promise<HttpRestApiAuthenticationResponse> {
     return await this.authenticationAdminService.execute(body);
+  }
+
+  @Post('/responsable')
+  public async responsableAuthentication(
+    @Body() body: HttpRestApiAuthenticationRequest,
+  ): Promise<HttpRestApiAuthenticationResponse> {
+    return await this.authenticationResponsableService.execute(body);
   }
 }
