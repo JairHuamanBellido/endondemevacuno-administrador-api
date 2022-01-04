@@ -38,7 +38,7 @@ export class AuthenticationResponsableService {
   }
 
   private _invalidCredentials(): HttpException {
-    const httpError: HttpError = { message: 'Invalid Credentials' };
+    const httpError: HttpError = { message: 'Las credenciales no son válidas' };
 
     throw new HttpException(httpError, HttpStatus.FORBIDDEN);
   }
