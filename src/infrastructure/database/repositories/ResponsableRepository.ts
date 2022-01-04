@@ -29,9 +29,7 @@ export abstract class TypeormResponsableRepository
     const query: ResponsableQueryBuilder = this.buildAccountQueryBuilder();
     this.extendQueryWithFindByAllCoincidence(query, searchBy);
 
-    const ormResponable: TypeOrmResponsable = await query
-      .leftJoinAndSelect('responsable.account', 'account')
-      .getOne();
+    const ormResponable: TypeOrmResponsable = await query.getOne();
 
     if (ormResponable) {
       domainResponsable =
@@ -88,6 +86,8 @@ export abstract class TypeormResponsableRepository
     query: ResponsableQueryBuilder,
     by?: QueryResponsableDto,
   ) {
+    query.leftJoinAndSelect('responsable.account', 'account');
+
     if (by.id) {
       query.orWhere(`"${this.responsableAlias}".id = :id`, { id: by.id });
     }
@@ -121,6 +121,8 @@ export abstract class TypeormResponsableRepository
     query: ResponsableQueryBuilder,
     by?: QueryResponsableDto,
   ) {
+    query.leftJoinAndSelect('responsable.account', 'account');
+
     if (by.id) {
       query.andWhere(`"${this.responsableAlias}".id = :id`, { id: by.id });
     }
@@ -147,6 +149,9 @@ export abstract class TypeormResponsableRepository
       query.andWhere(`"${this.responsableAlias}".name = :name`, {
         name: by.name,
       });
+    }
+    if (by.accountId) {
+      query.andWhere('account.id = :accountId', { accountId: by.accountId });
     }
   }
 }

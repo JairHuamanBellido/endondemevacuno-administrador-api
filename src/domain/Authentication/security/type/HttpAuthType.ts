@@ -8,6 +8,7 @@ export type HttpJwtPayload = {
   id: string;
   email: string;
   role: UserRole;
+  responsableId: string | undefined;
 };
 
 /**

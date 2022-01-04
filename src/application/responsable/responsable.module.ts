@@ -4,12 +4,16 @@ import { CreateAccountService } from '@domain/Account/service/CreateAccountServi
 import { ResponsableDITokens } from '@domain/Responsable/di/ResponsableDITokens';
 import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
 import { CreateResponsableService } from '@domain/Responsable/service/CreateResponsableService';
+import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/FlagCreateVaccinationCenterService';
 import { GenerateCredentialService } from '@domain/Responsable/service/GenerateCredentialsService';
 import { GetAllResponsableService } from '@domain/Responsable/service/GetAllResponsablesService';
 import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
+import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
+import { IVaccineCenterRepository } from '@domain/VaccineCenter/interface/IVaccineCenterRepository.interface';
 import { SendgridAdapter } from '@infrastructure/adapters/SendgridAdapter';
 import { TypeormAccountRepository } from '@infrastructure/database/repositories/AccountRepository';
 import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
+import { TypeormVaccinateCenterRepository } from '@infrastructure/database/repositories/VaccineCenterRepository';
 import { Module, Provider } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { ResponsablesController } from './controller/responsables.controller';
@@ -25,6 +29,12 @@ const persistenceProvider: Provider[] = [
     provide: AccountDITokens.IAccountRepository,
     useFactory: (connection: Connection) =>
       connection.getCustomRepository(TypeormAccountRepository),
+    inject: [Connection],
+  },
+  {
+    provide: VaccineCenterDITokens.IVaccineCenterRepository,
+    useFactory: (connection: Connection) =>
+      connection.getCustomRepository(TypeormVaccinateCenterRepository),
     inject: [Connection],
   },
   {
@@ -75,6 +85,21 @@ const serviceProviders: Provider[] = [
     useFactory: (responsableRepository: IResponsableRepository) =>
       new UpdateResponsableService(responsableRepository),
     inject: [ResponsableDITokens.IResponsableRepository],
+  },
+  {
+    provide: ResponsableDITokens.FlagCreateVaccinationCenterService,
+    useFactory: (
+      responsableRepository: IResponsableRepository,
+      vaccineCenterRepository: IVaccineCenterRepository,
+    ) =>
+      new FlagCreateVaccinationCenterService(
+        responsableRepository,
+        vaccineCenterRepository,
+      ),
+    inject: [
+      ResponsableDITokens.IResponsableRepository,
+      VaccineCenterDITokens.IVaccineCenterRepository,
+    ],
   },
 ];
 @Module({

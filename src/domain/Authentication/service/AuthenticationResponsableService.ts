@@ -7,10 +7,13 @@ import { Account } from '../model/Account';
 import { HttpError } from '@core/types/HttpError';
 import { UserRole } from '@core/enums/UsersRoleEnum';
 import { HttpJwtPayload } from '../security/type/HttpAuthType';
+import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
+import { Responsable } from '@domain/Responsable/model/Responsable';
 
 export class AuthenticationResponsableService {
   constructor(
     private readonly accountRepository: IAccountRepository,
+    private readonly responsableRepository: IResponsableRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -23,10 +26,15 @@ export class AuthenticationResponsableService {
     if (!account || payload.password !== account.password) {
       this._invalidCredentials();
     }
+
+    const responable: Responsable = await this.responsableRepository.getBy({
+      accountId: account.id,
+    });
     const jwtPayload: HttpJwtPayload = {
       email: account.email,
       id: account.id,
       role: account.isAdmin ? UserRole.ADMIN : UserRole.RESPONSABLE,
+      responsableId: responable.id,
     };
 
     const token = await this.jwtService.sign(jwtPayload);

@@ -16,6 +16,9 @@ export class ResponsableDITokens {
     'UpdateResponsableService',
   );
 
+  public static readonly FlagCreateVaccinationCenterService: unique symbol =
+    Symbol('FlagCreateVaccinationCenterService');
+
   // Repository
   public static readonly IResponsableRepository: unique symbol = Symbol(
     'IResponsableRepository',

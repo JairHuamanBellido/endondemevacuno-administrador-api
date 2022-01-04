@@ -17,6 +17,7 @@ export class TypeOrmVaccineCenter {
   id: string;
 
   @OneToOne(() => TypeOrmResponsable)
+  @JoinColumn({ name: 'responsable_id' })
   responsable: TypeOrmResponsable;
 
   @ManyToOne(() => TypeOrmUbigeo, (ubigeo) => ubigeo.vaccine_centers)
@@ -24,7 +25,7 @@ export class TypeOrmVaccineCenter {
   ubigeo: TypeOrmUbigeo;
 
   @OneToMany(() => TypeOrmInventory, (inventory) => inventory.vaccine_center)
-  inventory: TypeOrmInventory[];
+  inventory?: TypeOrmInventory[];
 
   @Column({ name: 'name', type: 'varchar', length: 255 })
   name: string;

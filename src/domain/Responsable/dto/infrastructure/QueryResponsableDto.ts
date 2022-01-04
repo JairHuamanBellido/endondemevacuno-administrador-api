@@ -5,4 +5,5 @@ export interface QueryResponsableDto {
   lastname?: string;
   isEnabled?: boolean;
   createdAt?: Date;
+  accountId?: string;
 }

@@ -29,6 +29,7 @@ export class HttpJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       id: payload.id,
       email: payload.email,
       role: payload.role,
+      responsableId: payload.responsableId,
     };
   }
 }

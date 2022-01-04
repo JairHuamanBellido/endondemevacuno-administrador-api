@@ -10,12 +10,21 @@ import { PassportModule } from '@nestjs/passport';
 import { Connection } from 'typeorm';
 import { AuthenticationController } from './controller/authentication.controller';
 import { AuthenticationResponsableService } from '@domain/Authentication/service/AuthenticationResponsableService';
+import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
+import { ResponsableDITokens } from '@domain/Responsable/di/ResponsableDITokens';
+import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
 
 const persistenceProviders: Provider[] = [
   {
     provide: AuthenticationDITokens.IAccountRepository,
     useFactory: (connection: Connection) =>
       connection.getCustomRepository(TypeormAccountRepository),
+    inject: [Connection],
+  },
+  {
+    provide: ResponsableDITokens.IResponsableRepository,
+    useFactory: (connection: Connection) =>
+      connection.getCustomRepository(TypeormResponsableRepository),
     inject: [Connection],
   },
 ];
@@ -39,9 +48,19 @@ const serviceProviders: Provider[] = [
     provide: AuthenticationDITokens.AuthenticationResponsableService,
     useFactory: (
       accountRepository: IAccountRepository,
+      responsableRepository: IResponsableRepository,
       jwtService: JwtService,
-    ) => new AuthenticationResponsableService(accountRepository, jwtService),
-    inject: [AuthenticationDITokens.IAccountRepository, JwtService],
+    ) =>
+      new AuthenticationResponsableService(
+        accountRepository,
+        responsableRepository,
+        jwtService,
+      ),
+    inject: [
+      AuthenticationDITokens.IAccountRepository,
+      ResponsableDITokens.IResponsableRepository,
+      JwtService,
+    ],
   },
 ];
 

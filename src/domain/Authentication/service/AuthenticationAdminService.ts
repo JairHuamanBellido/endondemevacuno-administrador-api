@@ -27,6 +27,7 @@ export class AuthenticationAdminService {
       email: account.email,
       id: account.id,
       role: account.isAdmin ? UserRole.ADMIN : UserRole.RESPONSABLE,
+      responsableId: undefined,
     };
 
     const token = await this.jwtService.sign(jwtPayload);

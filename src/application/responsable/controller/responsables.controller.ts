@@ -17,6 +17,10 @@ import { HttpRestApiCreateResponsable } from '../documentation/HttpRestApiCreate
 import { CreateResponsableService } from '@domain/Responsable/service/CreateResponsableService';
 import { HttpRestApiUpdateResponsable } from '../documentation/HttpRestApiUpdateResponsable';
 import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
+import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/FlagCreateVaccinationCenterService';
+import { HttpUser } from '@domain/Authentication/security/decorator/HttpUser';
+import { HttpJwtPayload } from '@domain/Authentication/security/type/HttpAuthType';
+import { HttpRestApiFlagResponse } from '@core/types/HttpRestApiFlagResponse';
 @ApiTags('responsables')
 @Controller('responsables')
 export class ResponsablesController {
@@ -27,6 +31,8 @@ export class ResponsablesController {
     private readonly createResponsableService: CreateResponsableService,
     @Inject(ResponsableDITokens.UpdateResponsableService)
     private readonly updateResponsableService: UpdateResponsableService,
+    @Inject(ResponsableDITokens.FlagCreateVaccinationCenterService)
+    private readonly flagCreateVaccinationCenterService: FlagCreateVaccinationCenterService,
   ) {}
 
   @ApiResponse({
@@ -69,5 +75,20 @@ export class ResponsablesController {
   ): Promise<ResponsableAdapter> {
     const responsable = await this.updateResponsableService.execute(body);
     return ResponsableAdapter.newFromResponsable(responsable);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Validate if responsable is allow to create a vaccine center',
+    type: HttpRestApiFlagResponse,
+  })
+  @HttpAuth(UserRole.RESPONSABLE)
+  @Get('valid-for-create-vaccine-center')
+  public async validForCreateVaccineCenter(
+    @HttpUser() httpUser: HttpJwtPayload,
+  ): Promise<HttpRestApiFlagResponse> {
+    return await this.flagCreateVaccinationCenterService.execute(
+      httpUser.responsableId,
+    );
   }
 }
