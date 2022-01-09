@@ -10,8 +10,7 @@ type ResponsableQueryBuilder = SelectQueryBuilder<TypeOrmResponsable>;
 @EntityRepository(TypeOrmResponsable)
 export abstract class TypeormResponsableRepository
   extends Repository<TypeOrmResponsable>
-  implements IResponsableRepository
-{
+  implements IResponsableRepository {
   private readonly responsableAlias: string = 'responsable';
 
   public async getAll(): Promise<Responsable[]> {
@@ -55,7 +54,6 @@ export abstract class TypeormResponsableRepository
     this.extendQueryWithFindByAnyCoincidence(query, searchBy);
 
     const ormResponable: TypeOrmResponsable[] = await query
-      .leftJoinAndSelect('responsable.account', 'account')
       .getMany();
 
     return TypeOrmResponsableMapper.toDomainsEntities(ormResponable);
@@ -74,7 +72,6 @@ export abstract class TypeormResponsableRepository
       id: newEntity.identifiers[0].id,
     });
     const ormEntity: TypeOrmResponsable = await query
-      .leftJoinAndSelect('responsable.account', 'account')
       .getOne();
     return TypeOrmResponsableMapper.toDomainEntity(ormEntity);
   }

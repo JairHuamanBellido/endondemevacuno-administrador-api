@@ -19,13 +19,15 @@ export class CreateResponsableService {
   }
 
   public async execute(createResponsable: Payload): Promise<Responsable> {
-    const account = await this.createAccount(createResponsable);
-
     const isEntityExist = await this.responsableRepository.getBy({
       dni: createResponsable.dni,
     });
 
     if (isEntityExist) this._entityExist();
+
+
+    const account = await this.createAccount(createResponsable);
+
 
     // await this.generateCredentialService.eee(
     //   createResponsable,
