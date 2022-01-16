@@ -27,6 +27,12 @@ export abstract class TypeOrmVaccineRepository
     return domainVaccine;
   }
 
+  public async getAll(): Promise<Vaccine[]> {
+    const query = this.buildAccountQueryBuilder();
+    const ormVaccines = await query.getMany();
+    return TypeOrmVaccineMapper.toDomainEntities(ormVaccines);
+  }
+
   private buildAccountQueryBuilder(): VaccineQueryBuilder {
     return this.createQueryBuilder(this.vaccineAlias).select();
   }

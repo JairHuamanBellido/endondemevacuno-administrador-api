@@ -13,6 +13,10 @@ export class TypeOrmVaccineMapper {
     return domainVaccine;
   }
 
+  public static toDomainEntities(ormVaccines: TypeOrmVaccine[]): Vaccine[] {
+    return ormVaccines.map((e) => this.toDomainEntity(e));
+  }
+
   public static toOrmEntity(vaccine: Vaccine): TypeOrmVaccine {
     const ormVaccine: TypeOrmVaccine = {
       created_at: vaccine.createdAt,
