@@ -24,4 +24,8 @@ export class TypeOrmUbigeoMapper {
 
     return ormUbigeo;
   }
+
+  public static toDomainEntities(ormgUbigeo: TypeOrmUbigeo[]): Ubigeo[] {
+    return ormgUbigeo.map((val) => this.toDomainEntity(val))
+  }
 }

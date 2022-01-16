@@ -1,6 +1,6 @@
 import { Ubigeo } from '@domain/Ubigeo/model/Ubigeo';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, plainToClass, plainToInstance } from 'class-transformer';
+import { Exclude, Expose, plainToInstance } from 'class-transformer';
 
 export class UbigeoAdapter {
   @Expose()
@@ -13,14 +13,13 @@ export class UbigeoAdapter {
 
   @Expose()
   @ApiProperty()
-  public provice: string;
+  public province: string;
 
   @Expose()
   @ApiProperty()
   public district: string;
 
   @Exclude()
-  @ApiProperty()
   public createdAt: Date;
 
   public static newFromUbigeo(ubigeo: Ubigeo): UbigeoAdapter {

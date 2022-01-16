@@ -4,5 +4,6 @@ import { Ubigeo } from "../model/Ubigeo";
 
 export interface IUbigeoRepository {
   getBy(queryUbigeoDto: QueryUbigeoDto): Promise<Ubigeo>;
+  getAll(): Promise<Ubigeo[]>
 
 }

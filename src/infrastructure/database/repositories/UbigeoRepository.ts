@@ -10,8 +10,15 @@ type UbigeoQueryBuilder = SelectQueryBuilder<TypeOrmUbigeo>;
 @EntityRepository(TypeOrmUbigeo)
 export abstract class TypeOrmUbigeoRepository
   extends Repository<TypeOrmUbigeo>
-  implements IUbigeoRepository
-{
+  implements IUbigeoRepository {
+  public async getAll(): Promise<Ubigeo[]> {
+
+    const query = this.buildAccountQueryBuilder();
+    const ormUbigeo = await query.getMany()
+
+    return TypeOrmUbigeoMapper.toDomainEntities(ormUbigeo)
+
+  }
   private readonly ubigeoAlias: string = 'ubigeo';
 
   public async getBy(queryUbigeoDto: QueryUbigeoDto): Promise<Ubigeo> {

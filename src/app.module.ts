@@ -5,9 +5,10 @@ import { DatabaseModule } from './infrastructure/database/database.module';
 import { AuthenticationModule } from './application/auth/authentication.module';
 import { ResponsableModule } from './application/responsable/responsable.module';
 import { VaccineCenterModule } from './application/vaccine-center/vaccine-center.module';
+import { UbigeoModule } from './application/ubigeo/ubigeo.module';
 
 @Module({
-  imports: [DatabaseModule, AuthenticationModule, ResponsableModule, VaccineCenterModule],
+  imports: [DatabaseModule, AuthenticationModule, ResponsableModule, VaccineCenterModule, UbigeoModule],
   controllers: [AppController],
   providers: [AppService],
 })
