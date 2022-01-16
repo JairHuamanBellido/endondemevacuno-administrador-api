@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { AuthenticationModule } from './application/auth/authentication.module';
 import { ResponsableModule } from './application/responsable/responsable.module';
+import { VaccineCenterModule } from './application/vaccine-center/vaccine-center.module';
 
 @Module({
-  imports: [DatabaseModule, AuthenticationModule, ResponsableModule],
+  imports: [DatabaseModule, AuthenticationModule, ResponsableModule, VaccineCenterModule],
   controllers: [AppController],
   providers: [AppService],
 })

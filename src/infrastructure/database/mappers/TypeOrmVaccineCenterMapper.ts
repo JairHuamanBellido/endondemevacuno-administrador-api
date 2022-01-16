@@ -1,7 +1,7 @@
-import { Responsable } from '@domain/Responsable/model/Responsable';
 import { VaccineCenter } from '@domain/VaccineCenter/model/VaccineCenter';
 import { TypeOrmVaccineCenter } from '../entity/TypeOrmVaccineCenter.entity';
 import { TypeOrmResponsableMapper } from './TypeOrmResponsableMapper';
+import { TypeOrmUbigeoMapper } from './TypeOrmUbigeoMapper';
 
 export class TypeOrmVaccineCenterMapper {
   public static toDomainEntity(
@@ -16,7 +16,12 @@ export class TypeOrmVaccineCenterMapper {
       isAvailable: ormVaccineCenter.is_available,
       localization: ormVaccineCenter.localization,
       name: ormVaccineCenter.name,
-      ubigeo: ormVaccineCenter.ubigeo,
+      responsable: ormVaccineCenter.responsable
+        ? TypeOrmResponsableMapper.toDomainEntity(ormVaccineCenter.responsable)
+        : undefined,
+      ubigeo: ormVaccineCenter.ubigeo
+        ? TypeOrmUbigeoMapper.toDomainEntity(ormVaccineCenter.ubigeo)
+        : undefined,
     });
 
     return domainVaccineCenter;
@@ -24,7 +29,6 @@ export class TypeOrmVaccineCenterMapper {
 
   public static toOrmEntity(
     vaccineCenter: VaccineCenter,
-    responsable: Responsable,
   ): TypeOrmVaccineCenter {
     return {
       business_hour: vaccineCenter.businessHour,
@@ -35,8 +39,12 @@ export class TypeOrmVaccineCenterMapper {
       is_available: vaccineCenter.isAvailable,
       localization: vaccineCenter.localization,
       name: vaccineCenter.name,
-      responsable: TypeOrmResponsableMapper.toOrmEntity(responsable),
-      ubigeo: vaccineCenter.ubigeo,
+      responsable: vaccineCenter.responsable
+        ? TypeOrmResponsableMapper.toOrmEntity(vaccineCenter.responsable)
+        : undefined,
+      ubigeo: vaccineCenter.ubigeo
+        ? TypeOrmUbigeoMapper.toOrmEntity(vaccineCenter.ubigeo)
+        : undefined,
     };
   }
 }

@@ -1,8 +1,10 @@
+import { Inventory } from '@domain/Inventory/model/Invetory';
+import { Responsable } from '@domain/Responsable/model/Responsable';
+import { Ubigeo } from '@domain/Ubigeo/model/Ubigeo';
 import { CreateVaccineCenterEntityPayload } from './types/CreateVaccineCenterEntityPayload';
 
 export class VaccineCenter {
   private _id: string;
-  private _ubigeo: any;
   private _name: string;
   private _direction: string;
   private _businessHour: string;
@@ -10,6 +12,9 @@ export class VaccineCenter {
   private _localization: string;
   private _diris: string;
   private _createdAt: Date;
+  private _ubigeo: Ubigeo;
+  private _responable: Responsable;
+  private _inventories: Inventory[];
 
   constructor(payload: CreateVaccineCenterEntityPayload) {
     this._businessHour = payload.businessHour;
@@ -21,14 +26,11 @@ export class VaccineCenter {
     this._localization = payload.localization;
     this._name = payload.name;
     this._ubigeo = payload.ubigeo;
+    this._responable = payload.responsable;
   }
 
   get id(): string {
     return this._id;
-  }
-
-  get ubigeo(): any {
-    return this._ubigeo;
   }
 
   get name(): string {
@@ -56,5 +58,21 @@ export class VaccineCenter {
 
   get createdAt(): Date {
     return this._createdAt;
+  }
+
+  get ubigeo() {
+    return this._ubigeo;
+  }
+
+  get responsable() {
+    return this._responable;
+  }
+
+  get inventories() {
+    return this._inventories;
+  }
+
+  set inventories(inventories: Inventory[]) {
+    this._inventories = inventories;
   }
 }

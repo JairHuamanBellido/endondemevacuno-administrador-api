@@ -27,6 +27,26 @@ export abstract class TypeormVaccinateCenterRepository
     return domainVaccineCenter;
   }
 
+  public async createEntity(
+    vaccineCenter: VaccineCenter,
+  ): Promise<VaccineCenter> {
+    const ormVaccineCenter =
+      TypeOrmVaccineCenterMapper.toOrmEntity(vaccineCenter);
+    const newEntity = await this.createQueryBuilder(this.vaccineCenterAlias)
+      .insert()
+      .into(TypeOrmVaccineCenter)
+      .values([ormVaccineCenter])
+      .execute();
+
+    const query: VaccineCenterQueryBuilder = this.buildAccountQueryBuilder();
+    this.extendQueryWithFindByAnyCoincidence(query, {
+      id: newEntity.identifiers[0].id,
+    });
+
+    const ormEntity: TypeOrmVaccineCenter = await query.getOne();
+    return TypeOrmVaccineCenterMapper.toDomainEntity(ormEntity);
+  }
+
   private buildAccountQueryBuilder(): VaccineCenterQueryBuilder {
     return this.createQueryBuilder(this.vaccineCenterAlias).select();
   }
@@ -36,13 +56,18 @@ export abstract class TypeormVaccinateCenterRepository
     by?: QueryVaccineCenterDto,
   ) {
     query.leftJoinAndSelect('vaccine_center.responsable', 'responsable');
-
+    query.leftJoinAndSelect('vaccine_center.ubigeo', 'ubigeo');
     if (by.id) {
       query.orWhere(`"${this.vaccineCenterAlias}".id = :id`, { id: by.id });
     }
     if (by.responsableId) {
       query.andWhere('responsable.id = :responsableId', {
         responsableId: by.responsableId,
+      });
+    }
+    if (by.name) {
+      query.andWhere(`${this.vaccineCenterAlias}.name = :name`, {
+        name: by.name,
       });
     }
   }

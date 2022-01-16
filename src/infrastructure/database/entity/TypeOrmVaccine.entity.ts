@@ -7,7 +7,7 @@ export class TypeOrmVaccine {
   id: string;
 
   @OneToMany(() => TypeOrmInventory, (inventory) => inventory.vaccines)
-  inventory: TypeOrmInventory;
+  inventory?: TypeOrmInventory;
 
   @Column({ name: 'name', type: 'varchar', length: 255 })
   name: string;

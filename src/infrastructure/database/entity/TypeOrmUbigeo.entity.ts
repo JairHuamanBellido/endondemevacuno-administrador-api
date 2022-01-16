@@ -22,5 +22,5 @@ export class TypeOrmUbigeo {
     () => TypeOrmVaccineCenter,
     (vaccine_center) => vaccine_center.ubigeo,
   )
-  vaccine_centers: TypeOrmVaccineCenter[] | null;
+  vaccine_centers?: TypeOrmVaccineCenter[] | null;
 }

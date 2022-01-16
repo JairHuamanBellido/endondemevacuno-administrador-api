@@ -1,6 +1,8 @@
+import { Responsable } from '@domain/Responsable/model/Responsable';
+import { Ubigeo } from '@domain/Ubigeo/model/Ubigeo';
+
 export type CreateVaccineCenterEntityPayload = {
   id: string;
-  ubigeo: any;
   name: string;
   direction: string;
   businessHour: string;
@@ -8,4 +10,6 @@ export type CreateVaccineCenterEntityPayload = {
   localization: string;
   diris: string;
   createdAt: Date;
+  ubigeo: Ubigeo;
+  responsable: Responsable;
 };
