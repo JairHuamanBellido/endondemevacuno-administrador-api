@@ -1,5 +1,6 @@
 import { Vaccine } from '@domain/Vaccine/model/Vaccine';
 import { TypeOrmVaccine } from '../entity/TypeOrmVaccine.entity';
+import { TypeOrmDiseaseMapper } from './TypeOrmDiseaseMapper';
 
 export class TypeOrmVaccineMapper {
   public static toDomainEntity(ormVaccine: TypeOrmVaccine): Vaccine {
@@ -8,6 +9,7 @@ export class TypeOrmVaccineMapper {
       description: ormVaccine.description,
       id: ormVaccine.id,
       name: ormVaccine.name,
+      disease: TypeOrmDiseaseMapper.toDomainEntity(ormVaccine.disease),
     });
 
     return domainVaccine;
@@ -23,6 +25,7 @@ export class TypeOrmVaccineMapper {
       description: vaccine.description,
       id: vaccine.id,
       name: vaccine.name,
+      disease: TypeOrmDiseaseMapper.toOrmEntity(vaccine.disease),
     };
 
     return ormVaccine;

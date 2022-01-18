@@ -29,7 +29,9 @@ export abstract class TypeOrmVaccineRepository
 
   public async getAll(): Promise<Vaccine[]> {
     const query = this.buildAccountQueryBuilder();
-    const ormVaccines = await query.getMany();
+    const ormVaccines = await query
+      .leftJoinAndSelect(`${this.vaccineAlias}.disease`, 'disease')
+      .getMany();
     return TypeOrmVaccineMapper.toDomainEntities(ormVaccines);
   }
 

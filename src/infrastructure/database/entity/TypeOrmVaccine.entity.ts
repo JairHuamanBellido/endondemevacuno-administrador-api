@@ -1,4 +1,7 @@
+import { ManyToOne } from 'typeorm';
+import { JoinColumn } from 'typeorm';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { TypeOrmDisease } from './TypeOrmDisease.entity';
 import { TypeOrmInventory } from './TypeOrmInventory.entity';
 
 @Entity({ name: 'vaccine' })
@@ -17,4 +20,8 @@ export class TypeOrmVaccine {
 
   @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
+
+  @ManyToOne(() => TypeOrmDisease, (disease) => disease.vaccine)
+  @JoinColumn({ name: 'disease_id' })
+  disease: TypeOrmDisease;
 }
