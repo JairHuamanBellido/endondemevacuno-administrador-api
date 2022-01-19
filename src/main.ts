@@ -12,6 +12,7 @@ async function bootstrap() {
     .setDescription('Listado de endpoints de la aplicación')
     .setVersion('1.0')
     .addTag('endondemavacuno')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
