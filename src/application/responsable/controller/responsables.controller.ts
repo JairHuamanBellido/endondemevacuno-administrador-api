@@ -55,6 +55,7 @@ export class ResponsablesController {
     type: ResponsableAdapter,
   })
   @HttpAuth(UserRole.ADMIN)
+  @ApiBearerAuth('bearer')
   @Post('/')
   public async createResponsable(
     @Body() body: HttpRestApiCreateResponsable,

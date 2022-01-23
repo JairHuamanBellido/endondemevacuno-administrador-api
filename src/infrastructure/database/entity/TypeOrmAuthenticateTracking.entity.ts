@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
 import { TypeOrmResponsable } from './TypeOrmResponsable.entity';
 
 @Entity({ name: 'authenticate_tracking' })
@@ -6,9 +6,9 @@ export class TypeOrmAuthenticateTracking {
   @PrimaryColumn()
   id: string;
 
-  @OneToOne(() => TypeOrmResponsable)
+  @ManyToOne(() => TypeOrmResponsable)
   @JoinColumn({ name: 'responsable_id' })
-  responable: TypeOrmResponsable;
+  responsable: TypeOrmResponsable;
 
   @Column({ name: 'result', type: 'bool' })
   result: boolean;

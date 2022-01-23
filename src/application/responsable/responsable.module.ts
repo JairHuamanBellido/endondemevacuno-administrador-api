@@ -105,5 +105,6 @@ const serviceProviders: Provider[] = [
 @Module({
   providers: [...persistenceProvider, ...serviceProviders],
   controllers: [ResponsablesController],
+  exports: [...serviceProviders]
 })
-export class ResponsableModule {}
+export class ResponsableModule { }

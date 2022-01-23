@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { TypeOrmAccount } from './TypeOrmAccount.entity';
+import { TypeOrmAuthenticateTracking } from './TypeOrmAuthenticateTracking.entity';
 
 @Entity({ name: 'responsable' })
 export class TypeOrmResponsable {
@@ -9,6 +10,9 @@ export class TypeOrmResponsable {
   @OneToOne(() => TypeOrmAccount)
   @JoinColumn({ name: 'account_id' })
   account: TypeOrmAccount;
+
+  @OneToMany(() => TypeOrmAuthenticateTracking, authenticateTracking => authenticateTracking.responsable)
+  authenticateTrackings?: TypeOrmAuthenticateTracking[];
 
   @Column({ name: 'dni', type: 'varchar', length: 8 })
   dni: string;
