@@ -9,7 +9,9 @@ export class TypeOrmVaccineMapper {
       description: ormVaccine.description,
       id: ormVaccine.id,
       name: ormVaccine.name,
-      disease: TypeOrmDiseaseMapper.toDomainEntity(ormVaccine.disease),
+      disease: ormVaccine.disease
+        ? TypeOrmDiseaseMapper.toDomainEntity(ormVaccine.disease)
+        : undefined,
     });
 
     return domainVaccine;
@@ -25,7 +27,9 @@ export class TypeOrmVaccineMapper {
       description: vaccine.description,
       id: vaccine.id,
       name: vaccine.name,
-      disease: TypeOrmDiseaseMapper.toOrmEntity(vaccine.disease),
+      disease: vaccine.disease
+        ? TypeOrmDiseaseMapper.toOrmEntity(vaccine.disease)
+        : undefined,
     };
 
     return ormVaccine;
