@@ -4,21 +4,21 @@ import { IResponsableRepository } from '@domain/Responsable/interface/IReponsabl
 import { Responsable } from '@domain/Responsable/model/Responsable';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { v4 as uuidv4 } from 'uuid';
 import { IAccountRepository } from '../../Account/interface/IAccountRepository.interface';
 import { AuthenticationRequestDto as Payload } from '../dto/application/AuthenticationRequestDto';
 import { AuthenticationResponseDto as Response } from '../dto/application/AuthenticationResponseDto';
 import { Account } from '../model/Account';
-import { AuthenticateTracking } from '../model/AuthenticateTracking';
 import { HttpJwtPayload } from '../security/type/HttpAuthType';
 import { AuthenticateTrackingService } from './AuthenticateTrackingService';
+import { EvaluateEnableResponsableAccount } from './EvaluateEnableResponsableAccount';
 
 export class AuthenticationResponsableService {
   constructor(
     private readonly accountRepository: IAccountRepository,
     private readonly responsableRepository: IResponsableRepository,
     private readonly jwtService: JwtService,
-    private readonly authenticateTrackingService: AuthenticateTrackingService
+    private readonly authenticateTrackingService: AuthenticateTrackingService,
+    private readonly evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount
   ) { }
 
   public async execute(payload: Payload): Promise<Response> {
@@ -37,8 +37,11 @@ export class AuthenticationResponsableService {
       accountId: account.id,
     });
 
-    if (!responsable.isEnabled)
-      this._accountTemporalBlocked();
+    if (!responsable.isEnabled) {
+      let result = await this.evaluateEnableResponsableAccount.execute(responsable);
+      if (!result)
+        this._accountTemporalBlocked();
+    }
 
     if (pass !== account.password) {
       await this.authenticateTrackingService.execute({

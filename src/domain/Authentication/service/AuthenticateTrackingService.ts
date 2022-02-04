@@ -6,6 +6,8 @@ import { AuthenticateTracking } from '../model/AuthenticateTracking';
 
 export class AuthenticateTrackingService {
     private _timePeriodFailure = 60000 * 10;
+    private _maxNumberFailedAttempts = 3;
+
     constructor(
         private readonly authenticateTrackingRepository: IAuthenticateTrackingRepository,
         private readonly updateResponsableService: UpdateResponsableService
@@ -13,8 +15,8 @@ export class AuthenticateTrackingService {
 
     public async execute(registerAuhenticateTracking: Payload): Promise<AuthenticateTracking> {
         let authenticateTracking = await this.registerAuhenticateTracking(registerAuhenticateTracking);
-        let failed = await this.getLoginFailed(registerAuhenticateTracking);
-        if (failed >= 3)
+        let failed = await this.shouldAccountBlocked(registerAuhenticateTracking);
+        if (failed)
             await this.updateResponsableService.execute({
                 id: registerAuhenticateTracking.responsable.id,
                 isEnabled: false
@@ -34,11 +36,16 @@ export class AuthenticateTrackingService {
         return newAutenticateTracking;
     }
 
+    private async shouldAccountBlocked(registerAuhenticateTracking: Payload) {
+        let failed = await this.getLoginFailed(registerAuhenticateTracking);
+        return failed >= this._maxNumberFailedAttempts;
+    }
+
     private async getLoginFailed(registerAuhenticateTracking: Payload): Promise<Number> {
         let logins = await this.authenticateTrackingRepository.findBy({
             fromDate: new Date(Date.now() - this._timePeriodFailure),
             responsableId: registerAuhenticateTracking.responsable.id,
         });
-        return logins.slice(0,3).filter(login => !login.result).length;
+        return logins.slice(0, this._maxNumberFailedAttempts).filter(login => !login.result).length;
     }
 }

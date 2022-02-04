@@ -6,6 +6,7 @@ import { HttpJwtStrategy } from '@domain/Authentication/security/passport/HttpJw
 import { AuthenticateTrackingService } from '@domain/Authentication/service/AuthenticateTrackingService';
 import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { AuthenticationResponsableService } from '@domain/Authentication/service/AuthenticationResponsableService';
+import { EvaluateEnableResponsableAccount } from '@domain/Authentication/service/EvaluateEnableResponsableAccount';
 import { ResponsableDITokens } from '@domain/Responsable/di/ResponsableDITokens';
 import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
 import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
@@ -64,6 +65,20 @@ const serviceProviders: Provider[] = [
     ],
   },
   {
+    provide: AuthenticationDITokens.EvaluateEnableResponsableAccount,
+    useFactory: (
+      authenticateTracking: IAuthenticateTrackingRepository,
+      updateResponsableService: UpdateResponsableService
+    ) => new EvaluateEnableResponsableAccount(
+      authenticateTracking,
+      updateResponsableService
+    ),
+    inject: [
+      AuthenticationDITokens.IAuthenticateTrackingRepository,
+      ResponsableDITokens.UpdateResponsableService
+    ],
+  },
+  {
     provide: AuthenticationDITokens.HttpJwtStrategy,
     useFactory: (authenticationService: AuthenticationAdminService) =>
       new HttpJwtStrategy(authenticationService),
@@ -75,19 +90,22 @@ const serviceProviders: Provider[] = [
       accountRepository: IAccountRepository,
       responsableRepository: IResponsableRepository,
       jwtService: JwtService,
-      authenticateTrackingService: AuthenticateTrackingService
+      authenticateTrackingService: AuthenticateTrackingService,
+      evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount
     ) =>
       new AuthenticationResponsableService(
         accountRepository,
         responsableRepository,
         jwtService,
-        authenticateTrackingService
+        authenticateTrackingService,
+        evaluateEnableResponsableAccount
       ),
     inject: [
       AuthenticationDITokens.IAccountRepository,
       ResponsableDITokens.IResponsableRepository,
       JwtService,
       AuthenticationDITokens.AuthenticateTrackingService,
+      AuthenticationDITokens.EvaluateEnableResponsableAccount,
     ],
   },
 ];

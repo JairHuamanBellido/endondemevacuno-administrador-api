@@ -10,6 +10,9 @@ export class AuthenticationDITokens {
     public static readonly AuthenticateTrackingService: unique symbol =
     Symbol('AuthenticateTrackingService');
 
+    public static readonly EvaluateEnableResponsableAccount: unique symbol =
+    Symbol('EvaluateEnableResponsableAccount');
+
   public static readonly HttpJwtStrategy: unique symbol =
     Symbol('HttpJwtStrategy');
 
