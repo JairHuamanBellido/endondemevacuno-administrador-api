@@ -4,7 +4,7 @@ import { HttpUser } from '@domain/Authentication/security/decorator/HttpUser';
 import { HttpJwtPayload } from '@domain/Authentication/security/type/HttpAuthType';
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { CreateVaccineCenterService } from '@domain/VaccineCenter/service/CreateVaccineCenterService';
-import { GetVaccineCenterService } from '@domain/VaccineCenter/service/GetVaccineCenterService';
+import { GetVaccineCenterByResponsableService } from '@domain/VaccineCenter/service/GetVaccineCenterByResponsableService';
 import { UpdateVaccineCenterService } from '@domain/VaccineCenter/service/UpdateVaccineCenterService';
 import { VaccineCenterAdapter } from '@infrastructure/adapters/VaccineCenterAdapter';
 import {
@@ -28,8 +28,8 @@ export class VaccineCenterController {
     private readonly createVaccineCenter: CreateVaccineCenterService,
     @Inject(VaccineCenterDITokens.UpdateVaccineCenterService)
     private readonly updateVaccineCenter: UpdateVaccineCenterService,
-    @Inject(VaccineCenterDITokens.GetVaccineCenterService)
-    private readonly getVaccineCenter: GetVaccineCenterService,
+    @Inject(VaccineCenterDITokens.GetVaccineCenterByResponsableService)
+    private readonly getVaccineCenterByResponsable: GetVaccineCenterByResponsableService,
   ) {}
 
   @ApiResponse({
@@ -57,11 +57,12 @@ export class VaccineCenterController {
     type: VaccineCenterAdapter,
   })
   @HttpAuth(UserRole.RESPONSABLE)
-  @Get('/:id')
-  public async getById(@Param('id') id: string) {
-    const vaccineCenter = await this.getVaccineCenter.execute(id);
+  @Get('/')
+  public async getByResponsable(@HttpUser() httpUser:HttpJwtPayload) {
+    const vaccineCenter = await this.getVaccineCenterByResponsable.execute(httpUser.responsableId);
     return VaccineCenterAdapter.newFromVaccineCenter(vaccineCenter);
   }
+
   @ApiResponse({
     status: HttpStatus.ACCEPTED,
     description: 'Update vaccine center',

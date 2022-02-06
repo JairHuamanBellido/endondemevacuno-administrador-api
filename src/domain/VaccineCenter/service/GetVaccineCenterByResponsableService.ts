@@ -7,13 +7,13 @@ import {
 import { IVaccineCenterRepository } from '../interface/IVaccineCenterRepository.interface';
 import { VaccineCenter } from '../model/VaccineCenter';
 
-export class GetVaccineCenterService {
+export class GetVaccineCenterByResponsableService {
   constructor(
     private readonly vaccineCenterRepository: IVaccineCenterRepository,
   ) {}
 
-  public async execute(id: string): Promise<VaccineCenter> {
-    const vaccineCenter = await this.vaccineCenterRepository.getBy({ id: id });
+  public async execute(responsableId: string): Promise<VaccineCenter> {
+    const vaccineCenter = await this.vaccineCenterRepository.getBy({ responsableId: responsableId });
 
     if (!vaccineCenter) this._notFound();
 

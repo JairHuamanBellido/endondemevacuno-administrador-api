@@ -11,7 +11,7 @@ import { IVaccineRepository } from '@domain/Vaccine/interface/IVaccineRepository
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { IVaccineCenterRepository } from '@domain/VaccineCenter/interface/IVaccineCenterRepository.interface';
 import { CreateVaccineCenterService } from '@domain/VaccineCenter/service/CreateVaccineCenterService';
-import { GetVaccineCenterService } from '@domain/VaccineCenter/service/GetVaccineCenterService';
+import { GetVaccineCenterByResponsableService } from '@domain/VaccineCenter/service/GetVaccineCenterByResponsableService';
 import { UpdateVaccineCenterService } from '@domain/VaccineCenter/service/UpdateVaccineCenterService';
 import { TypeOrmInventoryRepository } from '@infrastructure/database/repositories/IventoryRepository';
 import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
@@ -120,9 +120,9 @@ const serviceProviders: Provider[] = [
     inject: [VaccineCenterDITokens.IVaccineCenterRepository],
   },
   {
-    provide: VaccineCenterDITokens.GetVaccineCenterService,
+    provide: VaccineCenterDITokens.GetVaccineCenterByResponsableService,
     useFactory: (vaccineCenterRepository: IVaccineCenterRepository) =>
-      new GetVaccineCenterService(vaccineCenterRepository),
+      new GetVaccineCenterByResponsableService(vaccineCenterRepository),
     inject: [VaccineCenterDITokens.IVaccineCenterRepository],
   },
 ];
