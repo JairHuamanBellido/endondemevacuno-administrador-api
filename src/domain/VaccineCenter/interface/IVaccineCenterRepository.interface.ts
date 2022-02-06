@@ -5,5 +5,10 @@ import { VaccineCenter } from '../model/VaccineCenter';
 
 export interface IVaccineCenterRepository {
   getBy(query: QueryVaccineCenterDto): Promise<VaccineCenter>;
-  createEntity(vaccineCenter: VaccineCenter, responsable:Responsable, ubigeo:Ubigeo): Promise<VaccineCenter>;
+  createEntity(
+    vaccineCenter: VaccineCenter,
+    responsable: Responsable,
+    ubigeo: Ubigeo,
+  ): Promise<VaccineCenter>;
+  updateEntity(vaccineCneter: VaccineCenter): Promise<void>;
 }

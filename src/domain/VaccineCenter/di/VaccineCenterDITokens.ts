@@ -4,6 +4,10 @@ export class VaccineCenterDITokens {
     'CreateVaccineCenterService',
   );
 
+  public static readonly UpdateVaccineCenterService: unique symbol = Symbol(
+    'UpdateVaccineCenterService',
+  );
+
   // Repository
   public static readonly IVaccineCenterRepository: unique symbol = Symbol(
     'IVaccineCenterRepository',

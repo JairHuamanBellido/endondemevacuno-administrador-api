@@ -75,4 +75,8 @@ export class VaccineCenter {
   set inventories(inventories: Inventory[]) {
     this._inventories = inventories;
   }
+
+  set businessHour(businessHour: string) {
+    this._businessHour = businessHour;
+  }
 }

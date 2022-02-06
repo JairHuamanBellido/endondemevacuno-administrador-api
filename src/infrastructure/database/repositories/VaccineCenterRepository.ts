@@ -47,6 +47,16 @@ export abstract class TypeormVaccinateCenterRepository
     return TypeOrmVaccineCenterMapper.toDomainEntity(ormEntity);
   }
 
+  public async updateEntity(vaccineCenter: VaccineCenter): Promise<void> {
+    const ormVaccineCenter =
+      TypeOrmVaccineCenterMapper.toOrmEntity(vaccineCenter);
+    await this.createQueryBuilder(this.vaccineCenterAlias)
+      .update(TypeOrmVaccineCenter)
+      .set(ormVaccineCenter)
+      .where('id = :id', { id: ormVaccineCenter.id })
+      .execute();
+  }
+
   private buildAccountQueryBuilder(): VaccineCenterQueryBuilder {
     return this.createQueryBuilder(this.vaccineCenterAlias).select();
   }
