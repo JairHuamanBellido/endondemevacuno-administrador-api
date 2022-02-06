@@ -8,6 +8,10 @@ export class VaccineCenterDITokens {
     'UpdateVaccineCenterService',
   );
 
+  public static readonly GetVaccineCenterService: unique symbol = Symbol(
+    'GetVaccineCenterService',
+  );
+
   // Repository
   public static readonly IVaccineCenterRepository: unique symbol = Symbol(
     'IVaccineCenterRepository',

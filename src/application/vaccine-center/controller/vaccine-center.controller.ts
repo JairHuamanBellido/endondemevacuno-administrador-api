@@ -4,14 +4,16 @@ import { HttpUser } from '@domain/Authentication/security/decorator/HttpUser';
 import { HttpJwtPayload } from '@domain/Authentication/security/type/HttpAuthType';
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { CreateVaccineCenterService } from '@domain/VaccineCenter/service/CreateVaccineCenterService';
+import { GetVaccineCenterService } from '@domain/VaccineCenter/service/GetVaccineCenterService';
 import { UpdateVaccineCenterService } from '@domain/VaccineCenter/service/UpdateVaccineCenterService';
-import { VaccineAdapter } from '@infrastructure/adapters/VaccineAdapter';
 import { VaccineCenterAdapter } from '@infrastructure/adapters/VaccineCenterAdapter';
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Inject,
+  Param,
   Post,
   Put,
 } from '@nestjs/common';
@@ -26,6 +28,8 @@ export class VaccineCenterController {
     private readonly createVaccineCenter: CreateVaccineCenterService,
     @Inject(VaccineCenterDITokens.UpdateVaccineCenterService)
     private readonly updateVaccineCenter: UpdateVaccineCenterService,
+    @Inject(VaccineCenterDITokens.GetVaccineCenterService)
+    private readonly getVaccineCenter: GetVaccineCenterService,
   ) {}
 
   @ApiResponse({
@@ -48,9 +52,20 @@ export class VaccineCenterController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Return the detail of vaccine center',
+    type: VaccineCenterAdapter,
+  })
+  @HttpAuth(UserRole.RESPONSABLE)
+  @Get('/:id')
+  public async getById(@Param('id') id: string) {
+    const vaccineCenter = await this.getVaccineCenter.execute(id);
+    return VaccineCenterAdapter.newFromVaccineCenter(vaccineCenter);
+  }
+  @ApiResponse({
     status: HttpStatus.ACCEPTED,
     description: 'Update vaccine center',
-    type: VaccineAdapter,
+    type: VaccineCenterAdapter,
   })
   @HttpAuth(UserRole.RESPONSABLE)
   @Put('/')
