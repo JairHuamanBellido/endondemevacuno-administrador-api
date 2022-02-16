@@ -4,10 +4,11 @@ import { VaccineDITokens } from '@domain/Vaccine/di/VaccineDITokens';
 import { GetAllVacinesService } from '@domain/Vaccine/services/GetAllVacinesService';
 import { VaccineAdapter } from '@infrastructure/adapters/VaccineAdapter';
 import { Controller, Get, HttpStatus, Inject } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('vaccines')
 @ApiTags('Vaccines')
+@ApiBearerAuth()
 export class VaccinesController {
   constructor(
     @Inject(VaccineDITokens.GetAllVacinesService)

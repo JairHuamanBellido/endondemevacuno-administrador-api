@@ -4,10 +4,11 @@ import { UbigeoDITokens } from '@domain/Ubigeo/di/UbigeoDITokens';
 import { GetAllUbigeoService } from '@domain/Ubigeo/services/GetAllUbigeoService';
 import { UbigeoAdapter } from '@infrastructure/adapters/UbigeoAdapter';
 import { Controller, Get, HttpStatus, Inject } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('ubigeos')
 @ApiTags('Ubigeo')
+@ApiBearerAuth()
 export class UbigeoController {
   constructor(
     @Inject(UbigeoDITokens.GetAllUbigeoService)

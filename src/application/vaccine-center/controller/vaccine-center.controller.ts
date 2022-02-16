@@ -17,11 +17,13 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpRestApiCreateVaccineCenter } from '../documentation/HttpRestApiCreateVaccineCenter';
 import { HttpRestApiUpdateVaccineCenter } from '../documentation/HttpRestApiUpdateVaccineCenter';
 
 @Controller('vaccine-center')
+@ApiTags('vaccine-center')
+@ApiBearerAuth()
 export class VaccineCenterController {
   constructor(
     @Inject(VaccineCenterDITokens.CreateVaccineCenterService)

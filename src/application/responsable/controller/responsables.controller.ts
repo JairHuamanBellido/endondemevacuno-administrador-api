@@ -23,6 +23,7 @@ import { HttpJwtPayload } from '@domain/Authentication/security/type/HttpAuthTyp
 import { HttpRestApiFlagResponse } from '@core/types/HttpRestApiFlagResponse';
 @ApiTags('responsables')
 @Controller('responsables')
+@ApiBearerAuth()
 export class ResponsablesController {
   constructor(
     @Inject(ResponsableDITokens.GetAllResponsablesService)
@@ -41,7 +42,6 @@ export class ResponsablesController {
     type: [ResponsableAdapter],
   })
   @HttpAuth(UserRole.ADMIN)
-  @ApiBearerAuth('bearer')
   @Get('/')
   public async getAll(): Promise<ResponsableAdapter[]> {
     const responsables = await this.getAllResponsablesService.execute();
@@ -55,7 +55,6 @@ export class ResponsablesController {
     type: ResponsableAdapter,
   })
   @HttpAuth(UserRole.ADMIN)
-  @ApiBearerAuth('bearer')
   @Post('/')
   public async createResponsable(
     @Body() body: HttpRestApiCreateResponsable,
