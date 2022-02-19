@@ -18,7 +18,7 @@ export class UpdateVaccineCenterService {
 
     if (!vaccineCenter) this._notFound();
 
-    vaccineCenter.businessHour = `${payload.startHour} - ${payload.endHour}`;
+    vaccineCenter.edit(payload);
 
     await this.vaccineCenterRepository.updateEntity(vaccineCenter);
 

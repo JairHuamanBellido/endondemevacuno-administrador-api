@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class HttpRestApiUpdateVaccineCenter {
   @ApiProperty()
@@ -9,11 +9,16 @@ export class HttpRestApiUpdateVaccineCenter {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   startHour: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   endHour: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  isAvailable: boolean;
 }

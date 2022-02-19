@@ -1,3 +1,4 @@
+import { HttpRestApiUpdateVaccineCenter } from '@application/vaccine-center/documentation/HttpRestApiUpdateVaccineCenter';
 import { Inventory } from '@domain/Inventory/model/Invetory';
 import { Responsable } from '@domain/Responsable/model/Responsable';
 import { Ubigeo } from '@domain/Ubigeo/model/Ubigeo';
@@ -76,7 +77,12 @@ export class VaccineCenter {
     this._inventories = inventories;
   }
 
-  set businessHour(businessHour: string) {
-    this._businessHour = businessHour;
+  public edit(payload: HttpRestApiUpdateVaccineCenter): void {
+    if (payload.endHour && payload.startHour) {
+      this._businessHour = `${payload.startHour} -  ${payload.endHour}`;
+    }
+    if (payload.isAvailable !== undefined) {
+      this._isAvailable = payload.isAvailable;
+    }
   }
 }

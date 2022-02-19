@@ -13,7 +13,9 @@ export class GetVaccineCenterByResponsableService {
   ) {}
 
   public async execute(responsableId: string): Promise<VaccineCenter> {
-    const vaccineCenter = await this.vaccineCenterRepository.getBy({ responsableId: responsableId });
+    const vaccineCenter = await this.vaccineCenterRepository.getBy({
+      responsableId: responsableId,
+    });
 
     if (!vaccineCenter) this._notFound();
 

@@ -60,8 +60,10 @@ export class VaccineCenterController {
   })
   @HttpAuth(UserRole.RESPONSABLE)
   @Get('/')
-  public async getByResponsable(@HttpUser() httpUser:HttpJwtPayload) {
-    const vaccineCenter = await this.getVaccineCenterByResponsable.execute(httpUser.responsableId);
+  public async getByResponsable(@HttpUser() httpUser: HttpJwtPayload) {
+    const vaccineCenter = await this.getVaccineCenterByResponsable.execute(
+      httpUser.responsableId,
+    );
     return VaccineCenterAdapter.newFromVaccineCenter(vaccineCenter);
   }
 
