@@ -25,14 +25,12 @@ export class CreateResponsableService {
 
     if (isEntityExist) this._entityExist();
 
-
     const account = await this.createAccount(createResponsable);
 
-
-    // await this.generateCredentialService.eee(
-    //   createResponsable,
-    //   this._generatedPassword,
-    // );
+    await this.generateCredentialService.eee(
+      createResponsable,
+      this._generatedPassword,
+    );
     return await this.createResponsable(createResponsable, account);
   }
 

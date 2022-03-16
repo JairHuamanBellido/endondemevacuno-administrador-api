@@ -54,28 +54,30 @@ const serviceProviders: Provider[] = [
     provide: AuthenticationDITokens.AuthenticateTrackingService,
     useFactory: (
       authenticateTracking: IAuthenticateTrackingRepository,
-      updateResponsableService: UpdateResponsableService
-    ) => new AuthenticateTrackingService(
-      authenticateTracking,
-      updateResponsableService
-    ),
+      updateResponsableService: UpdateResponsableService,
+    ) =>
+      new AuthenticateTrackingService(
+        authenticateTracking,
+        updateResponsableService,
+      ),
     inject: [
       AuthenticationDITokens.IAuthenticateTrackingRepository,
-      ResponsableDITokens.UpdateResponsableService
+      ResponsableDITokens.UpdateResponsableService,
     ],
   },
   {
     provide: AuthenticationDITokens.EvaluateEnableResponsableAccount,
     useFactory: (
       authenticateTracking: IAuthenticateTrackingRepository,
-      updateResponsableService: UpdateResponsableService
-    ) => new EvaluateEnableResponsableAccount(
-      authenticateTracking,
-      updateResponsableService
-    ),
+      updateResponsableService: UpdateResponsableService,
+    ) =>
+      new EvaluateEnableResponsableAccount(
+        authenticateTracking,
+        updateResponsableService,
+      ),
     inject: [
       AuthenticationDITokens.IAuthenticateTrackingRepository,
-      ResponsableDITokens.UpdateResponsableService
+      ResponsableDITokens.UpdateResponsableService,
     ],
   },
   {
@@ -91,14 +93,14 @@ const serviceProviders: Provider[] = [
       responsableRepository: IResponsableRepository,
       jwtService: JwtService,
       authenticateTrackingService: AuthenticateTrackingService,
-      evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount
+      evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount,
     ) =>
       new AuthenticationResponsableService(
         accountRepository,
         responsableRepository,
         jwtService,
         authenticateTrackingService,
-        evaluateEnableResponsableAccount
+        evaluateEnableResponsableAccount,
       ),
     inject: [
       AuthenticationDITokens.IAccountRepository,
@@ -114,9 +116,9 @@ const serviceProviders: Provider[] = [
   imports: [
     PassportModule,
     JwtModule.register({ secret: SystemConfig.JWT_KEY }),
-    ResponsableModule
+    ResponsableModule,
   ],
   controllers: [AuthenticationController],
   providers: [...persistenceProviders, ...serviceProviders],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}

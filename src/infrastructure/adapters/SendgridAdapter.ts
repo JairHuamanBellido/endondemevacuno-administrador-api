@@ -9,7 +9,7 @@ export class SendgridAdapter {
     sgMail.setApiKey(SendgridConfig.API_KEY);
     await sgMail
       .send({
-        from: 'huamanbellidoj@gmail.com',
+        from: 'jairhbdev@gmail.com',
         text: payload.text,
         to: payload.destination,
         subject: payload.subject,
