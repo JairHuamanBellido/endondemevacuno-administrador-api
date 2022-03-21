@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CreateAccountService } from '@domain/Account/service/CreateAccountService';
 import { GenerateCredentialService } from './GenerateCredentialsService';
 import { HttpRestApiCreateResponsable as Payload } from '@application/responsable/documentation/HttpRestApiCreateResponsable';
+var generator = require('generate-password');
 
 export class CreateResponsableService {
   private _generatedPassword: string;
@@ -35,6 +36,12 @@ export class CreateResponsableService {
   }
 
   private async createAccount(createResponsable: Payload): Promise<Account> {
+    this._generatedPassword = generator.generate({
+      length: 8,
+      numbers: true,
+      strict: true
+    });
+    
     const account: Account = new Account({
       createdAt: new Date(),
       email: createResponsable.email,
