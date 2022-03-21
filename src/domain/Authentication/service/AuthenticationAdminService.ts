@@ -7,11 +7,13 @@ import { IAccountRepository } from '../../Account/interface/IAccountRepository.i
 import { Account } from '../model/Account';
 import { HttpJwtPayload } from '../security/type/HttpAuthType';
 import { HttpError } from '@core/types/HttpError';
+const bcrypt = require('bcrypt');
+
 export class AuthenticationAdminService {
   constructor(
     private readonly accountRepository: IAccountRepository,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   public async execute(payload: Payload): Promise<Response> {
     const account: Account = await this.accountRepository.getBy({
@@ -19,7 +21,7 @@ export class AuthenticationAdminService {
       isAdmin: true,
     });
 
-    if (!account || payload.password !== account.password) {
+    if (!account || !bcrypt.compareSync(payload.password, account.password)) {
       this._invalidCredentials();
     }
 

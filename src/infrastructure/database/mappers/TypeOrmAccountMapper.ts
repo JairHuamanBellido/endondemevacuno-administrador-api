@@ -15,13 +15,12 @@ export class TypeOrmAccountMapper {
   }
 
   public static toOrmEntity(domainAccount: Account): TypeOrmAccount {
-    const ormAccount: TypeOrmAccount = {
-      created_at: domainAccount.createdAt,
-      email: domainAccount.email,
-      id: domainAccount.id,
-      is_admin: domainAccount.isAdmin,
-      password: domainAccount.password,
-    };
+    const ormAccount: TypeOrmAccount = new TypeOrmAccount();
+    ormAccount.created_at = domainAccount.createdAt;
+    ormAccount.email = domainAccount.email;
+    ormAccount.id = domainAccount.id;
+    ormAccount.is_admin = domainAccount.isAdmin;
+    ormAccount.password = domainAccount.password;
     return ormAccount;
   }
 }

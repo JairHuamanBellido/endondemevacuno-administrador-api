@@ -11,6 +11,7 @@ import { Account } from '../model/Account';
 import { HttpJwtPayload } from '../security/type/HttpAuthType';
 import { AuthenticateTrackingService } from './AuthenticateTrackingService';
 import { EvaluateEnableResponsableAccount } from './EvaluateEnableResponsableAccount';
+const bcrypt = require('bcrypt');
 
 export class AuthenticationResponsableService {
   constructor(
@@ -42,8 +43,8 @@ export class AuthenticationResponsableService {
       if (!result)
         this._accountTemporalBlocked();
     }
-
-    if (pass !== account.password) {
+    
+    if (!bcrypt.compareSync(pass, account.password)) {
       await this.authenticateTrackingService.execute({
         responsable: responsable,
         result: false

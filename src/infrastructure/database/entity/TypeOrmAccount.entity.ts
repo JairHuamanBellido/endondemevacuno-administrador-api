@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+const bcrypt = require('bcrypt')
 
 @Entity({ name: 'account' })
 export class TypeOrmAccount {
@@ -8,7 +9,7 @@ export class TypeOrmAccount {
   @Column({ name: 'email', type: 'varchar', length: 255 })
   email: string;
 
-  @Column({ name: 'password', type: 'varchar', length: 50 })
+  @Column({ name: 'password', type: 'varchar', length: 65 })
   password: string;
 
   @Column({ name: 'is_admin', type: 'bool' })
@@ -16,4 +17,12 @@ export class TypeOrmAccount {
 
   @Column({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
+
+  @BeforeInsert()
+  public async beforeInsert() {
+    if (this.password) {
+      const hashed = await bcrypt.hash(this.password, 10);
+      this.password = hashed;
+    }
+  }
 }
