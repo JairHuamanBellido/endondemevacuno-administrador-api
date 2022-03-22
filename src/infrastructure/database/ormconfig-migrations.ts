@@ -1,3 +1,3 @@
 import { ormconfig } from './ormconfig';
 
-export = ormconfig;
+export default ormconfig;

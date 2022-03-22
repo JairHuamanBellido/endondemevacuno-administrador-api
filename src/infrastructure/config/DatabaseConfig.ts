@@ -1,13 +1,14 @@
-import { config } from 'dotenv';
-config();
+import { GetSecretValueResponse } from 'aws-sdk/clients/secretsmanager';
+import { AwsSecretManager, IAwsSecretManager } from './AwsSecretManager';
+
 export class DatabaseConfig {
-  public static readonly DB_HOST: string = process.env.DB_HOST;
+  public async getCredentials() {
+    const { session } = new AwsSecretManager();
 
-  public static readonly DB_PORT: number = parseInt(process.env.DB_PORT);
+    const { SecretString }: GetSecretValueResponse = await session
+      .getSecretValue({ SecretId: 'prod/EnDondeMeVacuno' })
+      .promise();
 
-  public static readonly DB_USERNAME: string = process.env.DB_USERNAME;
-
-  public static readonly DB_NAME: string = process.env.DB_NAME;
-
-  public static readonly DB_PASSWORD: string = process.env.DB_PASSWORD;
+    return JSON.parse(SecretString) as IAwsSecretManager;
+  }
 }

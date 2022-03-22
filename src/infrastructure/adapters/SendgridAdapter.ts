@@ -5,8 +5,10 @@ import sgMail = require('@sendgrid/mail');
 
 export class SendgridAdapter {
   public async sendEmail(payload: EmailResponsableDto): Promise<void> {
+    const session = new SendgridConfig();
+
     sgMail.setClient(new Client());
-    sgMail.setApiKey(SendgridConfig.API_KEY);
+    sgMail.setApiKey(await session.getApiKey());
     await sgMail
       .send({
         from: 'jairhbdev@gmail.com',

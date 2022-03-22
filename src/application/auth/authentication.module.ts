@@ -2,7 +2,10 @@ import { ResponsableModule } from '@application/responsable/responsable.module';
 import { IAccountRepository } from '@domain/Account/interface/IAccountRepository.interface';
 import { AuthenticationDITokens } from '@domain/Authentication/di/AuthenticationDITokens';
 import { IAuthenticateTrackingRepository } from '@domain/Authentication/interface/IAuthenticateTrackingRepository.interface';
-import { HttpJwtStrategy } from '@domain/Authentication/security/passport/HttpJwtStrategy';
+import {
+  HttpJwtStrategy,
+  jwtConfig,
+} from '@domain/Authentication/security/passport/HttpJwtStrategy';
 import { AuthenticateTrackingService } from '@domain/Authentication/service/AuthenticateTrackingService';
 import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { AuthenticationResponsableService } from '@domain/Authentication/service/AuthenticationResponsableService';
@@ -10,7 +13,6 @@ import { EvaluateEnableResponsableAccount } from '@domain/Authentication/service
 import { ResponsableDITokens } from '@domain/Responsable/di/ResponsableDITokens';
 import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
 import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
-import { SystemConfig } from '@infrastructure/config/SystemConfig';
 import { TypeormAccountRepository } from '@infrastructure/database/repositories/AccountRepository';
 import { TypeOrmAuthenticateTrackingRepository } from '@infrastructure/database/repositories/AuthenticateTrackingRepository';
 import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
@@ -115,7 +117,7 @@ const serviceProviders: Provider[] = [
 @Module({
   imports: [
     PassportModule,
-    JwtModule.register({ secret: SystemConfig.JWT_KEY }),
+    JwtModule.registerAsync(jwtConfig),
     ResponsableModule,
   ],
   controllers: [AuthenticationController],

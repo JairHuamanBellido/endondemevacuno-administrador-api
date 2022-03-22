@@ -2,6 +2,7 @@
 import { AuthenticationAdminService } from '@domain/Authentication/service/AuthenticationAdminService';
 import { SystemConfig } from '@infrastructure/config/SystemConfig';
 import { UnauthorizedException } from '@nestjs/common';
+import { JwtModuleAsyncOptions } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { HttpJwtPayload } from '../type/HttpAuthType';
@@ -11,7 +12,7 @@ export class HttpJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: SystemConfig.JWT_KEY,
+      secretOrKey: 'EnDondeMeVacunoSecret',
     });
   }
 
@@ -33,3 +34,13 @@ export class HttpJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     };
   }
 }
+
+export const jwtConfig: JwtModuleAsyncOptions = {
+  useFactory: async () => {
+    const systemConfig = new SystemConfig();
+    const { JwtKey } = await systemConfig.getConfiguration();
+    return {
+      secret: JwtKey,
+    };
+  },
+};

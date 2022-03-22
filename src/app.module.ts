@@ -9,7 +9,14 @@ import { UbigeoModule } from './application/ubigeo/ubigeo.module';
 import { VaccinesModule } from './application/vaccines/vaccines.module';
 
 @Module({
-  imports: [DatabaseModule, AuthenticationModule, ResponsableModule, VaccineCenterModule, UbigeoModule, VaccinesModule],
+  imports: [
+    DatabaseModule,
+    AuthenticationModule,
+    ResponsableModule,
+    VaccineCenterModule,
+    UbigeoModule,
+    VaccinesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
