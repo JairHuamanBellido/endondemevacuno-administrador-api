@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { config as awsconfig } from 'aws-sdk';
 
 import { AppModule } from './app.module';
 
@@ -16,7 +17,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-
+  awsconfig.update({
+    region: 'us-east-2',
+    accessKeyId: 'AKIA5L2KIWR3DQNCW4OF',
+    secretAccessKey: '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',
+  });
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
