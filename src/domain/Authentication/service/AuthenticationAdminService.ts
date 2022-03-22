@@ -13,11 +13,11 @@ export class AuthenticationAdminService {
   constructor(
     private readonly accountRepository: IAccountRepository,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   public async execute(payload: Payload): Promise<Response> {
     const account: Account = await this.accountRepository.getBy({
-      ...payload,
+      email: payload.email,
       isAdmin: true,
     });
 

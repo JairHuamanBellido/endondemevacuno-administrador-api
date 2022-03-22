@@ -19,43 +19,43 @@ export class AuthenticationResponsableService {
     private readonly responsableRepository: IResponsableRepository,
     private readonly jwtService: JwtService,
     private readonly authenticateTrackingService: AuthenticateTrackingService,
-    private readonly evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount
-  ) { }
+    private readonly evaluateEnableResponsableAccount: EvaluateEnableResponsableAccount,
+  ) {}
 
   public async execute(payload: Payload): Promise<Response> {
     let pass = payload.password;
     payload.password = null;
 
     const account: Account = await this.accountRepository.getBy({
-      ...payload,
+      email: payload.email,
       isAdmin: false,
     });
 
-    if (!account)
-      this._invalidCredentials();
+    if (!account) this._invalidCredentials();
 
     const responsable: Responsable = await this.responsableRepository.getBy({
       accountId: account.id,
     });
 
     if (!responsable.isEnabled) {
-      let result = await this.evaluateEnableResponsableAccount.execute(responsable);
-      if (!result)
-        this._accountTemporalBlocked();
+      let result = await this.evaluateEnableResponsableAccount.execute(
+        responsable,
+      );
+      if (!result) this._accountTemporalBlocked();
     }
-    
+
     if (!bcrypt.compareSync(pass, account.password)) {
       await this.authenticateTrackingService.execute({
         responsable: responsable,
-        result: false
-      })
+        result: false,
+      });
       this._invalidCredentials();
     }
 
     await this.authenticateTrackingService.execute({
       responsable: responsable,
-      result: true
-    })
+      result: true,
+    });
 
     const jwtPayload: HttpJwtPayload = {
       email: account.email,
