@@ -3,5 +3,7 @@ import { Inventory } from '../model/Invetory';
 
 export interface IIventoryRepository {
   getBy(searchBy: QueryInventoryDto): Promise<Inventory>;
-  createEntity(entity:Inventory): Promise<Inventory>
+  createEntity(entity: Inventory): Promise<Inventory>;
+  getAll(searchBy: QueryInventoryDto): Promise<Inventory[]>;
+  deleteEntity(searchBy: QueryInventoryDto): Promise<boolean>;
 }

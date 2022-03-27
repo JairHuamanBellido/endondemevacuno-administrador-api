@@ -1,5 +1,4 @@
 import { Inventory } from '@domain/Inventory/model/Invetory';
-import { VaccineCenter } from '@domain/VaccineCenter/model/VaccineCenter';
 import { TypeOrmInventory } from '../entity/TypeOrmInventory.entity';
 import { TypeOrmVaccineCenterMapper } from './TypeOrmVaccineCenterMapper';
 import { TypeOrmVaccineMapper } from './TypeOrmVaccineMapper';
@@ -19,12 +18,20 @@ export class TypeOrmInvetoryMapper {
     return domainInventory;
   }
 
+  public static toDomainsEntities(
+    ormInventories: TypeOrmInventory[],
+  ): Inventory[] {
+    return ormInventories.map((e) => this.toDomainEntity(e));
+  }
+
   public static toOrmEntity(inventory: Inventory): TypeOrmInventory {
     const ormInventory: TypeOrmInventory = {
       created_at: inventory.createdAt,
       id: inventory.id,
       quantity: inventory.quantity,
-      vaccine_center: TypeOrmVaccineCenterMapper.toOrmEntity(inventory.vaccineCenter),
+      vaccine_center: TypeOrmVaccineCenterMapper.toOrmEntity(
+        inventory.vaccineCenter,
+      ),
       vaccines: TypeOrmVaccineMapper.toOrmEntity(inventory.vaccine),
     };
 

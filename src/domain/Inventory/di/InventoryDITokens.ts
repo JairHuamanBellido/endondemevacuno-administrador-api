@@ -4,6 +4,12 @@ export class InventoryDITokens {
     'CreateInventoryService',
   );
 
+  public static readonly GetInvetoryByVaccineCenterService: unique symbol =
+    Symbol('GetInvetoryByVaccineCenterService');
+
+  public static readonly DeleteVaccineToInventoryService: unique symbol =
+    Symbol('DeleteVaccineToInventoryService');
+
   // Repository
   public static readonly IIventoryRepository: unique symbol = Symbol(
     'IIventoryRepository',

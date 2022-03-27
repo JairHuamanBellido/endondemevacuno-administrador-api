@@ -1,5 +1,6 @@
 export interface QueryInventoryDto {
-    id?:string;
-    quantity?:number;
-    createdAt?:Date;
+  id?: string;
+  quantity?: number;
+  createdAt?: Date;
+  vaccineCenterId?: string;
 }

@@ -1,6 +1,8 @@
 import { InventoryDITokens } from '@domain/Inventory/di/InventoryDITokens';
 import { IIventoryRepository } from '@domain/Inventory/interface/IIventoryRepository.interface';
 import { CreateInventoryService } from '@domain/Inventory/services/CreateInventoryService';
+import { DeleteVaccineToInventoryService } from '@domain/Inventory/services/DeleteVaccineFromInventoryService';
+import { GetInvetoryByVaccineCenterService } from '@domain/Inventory/services/GetInvetoryByVaccineCenterService';
 import { ResponsableDITokens } from '@domain/Responsable/di/ResponsableDITokens';
 import { IResponsableRepository } from '@domain/Responsable/interface/IReponsableRepository.interface';
 import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/FlagCreateVaccinationCenterService';
@@ -124,6 +126,18 @@ const serviceProviders: Provider[] = [
     useFactory: (vaccineCenterRepository: IVaccineCenterRepository) =>
       new GetVaccineCenterByResponsableService(vaccineCenterRepository),
     inject: [VaccineCenterDITokens.IVaccineCenterRepository],
+  },
+  {
+    provide: InventoryDITokens.GetInvetoryByVaccineCenterService,
+    useFactory: (inventoryRepository: IIventoryRepository) =>
+      new GetInvetoryByVaccineCenterService(inventoryRepository),
+    inject: [InventoryDITokens.IIventoryRepository],
+  },
+  {
+    provide: InventoryDITokens.DeleteVaccineToInventoryService,
+    useFactory: (inventoryRepository: IIventoryRepository) =>
+      new DeleteVaccineToInventoryService(inventoryRepository),
+    inject: [InventoryDITokens.IIventoryRepository],
   },
 ];
 

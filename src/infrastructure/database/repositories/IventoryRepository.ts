@@ -28,6 +28,23 @@ export abstract class TypeOrmInventoryRepository
     }
     return domainInventory;
   }
+  public async getAll(searchBy: QueryInventoryDto): Promise<Inventory[]> {
+    const query = this.buildAccountQueryBuilder();
+    this.extendQueryWithFindByAnyCoincidence(query, searchBy);
+
+    const ormInventory = await query.getMany();
+    return TypeOrmInvetoryMapper.toDomainsEntities(ormInventory);
+  }
+
+  public async deleteEntity(searchBy: QueryInventoryDto): Promise<boolean> {
+    const query = this.buildAccountQueryBuilder()
+      .delete()
+      .from(TypeOrmInventory)
+      .where('id = :id', { id: searchBy.id })
+      .execute();
+    if (!query) return false;
+    return true;
+  }
 
   public async createEntity(entity: Inventory): Promise<Inventory> {
     const ormInventory = TypeOrmInvetoryMapper.toOrmEntity(entity);
@@ -74,6 +91,14 @@ export abstract class TypeOrmInventoryRepository
       query.orWhere(`"${this.inventoryAlias}".quantity = :quantity`, {
         quantity: by.quantity,
       });
+    }
+    if (by.vaccineCenterId) {
+      query.orWhere(
+        `${this.inventoryAlias}.vaccine_center.id = :vaccine_center_id`,
+        {
+          vaccine_center_id: by.vaccineCenterId,
+        },
+      );
     }
   }
 }
