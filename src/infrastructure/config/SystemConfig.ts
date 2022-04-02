@@ -7,16 +7,22 @@ export class SystemConfig {
   public static readonly NODE_ENV: string = process.env.NODE_ENV;
 
   public async getConfiguration() {
-    const { session } = new AwsSecretManager();
-    const { SecretString }: GetSecretValueResponse = await session
-      .getSecretValue({ SecretId: 'prod/EnDondeMeVacuno' })
-      .promise();
-    const { EnDondeMeVacunoJwtKey, EnDondeMeVacunoPasswordKey } = JSON.parse(
-      SecretString,
-    ) as IAwsSecretManager;
+    if (process.env.NODE_ENV !== 'development') {
+      const { session } = new AwsSecretManager();
+      const { SecretString }: GetSecretValueResponse = await session
+        .getSecretValue({ SecretId: 'prod/EnDondeMeVacuno' })
+        .promise();
+      const { EnDondeMeVacunoJwtKey, EnDondeMeVacunoPasswordKey } = JSON.parse(
+        SecretString,
+      ) as IAwsSecretManager;
+      return {
+        JwtKey: EnDondeMeVacunoJwtKey,
+        PasswordKey: EnDondeMeVacunoPasswordKey,
+      };
+    }
     return {
-      JwtKey: process.env.JWT_KEY || EnDondeMeVacunoJwtKey,
-      PasswordKey: process.env.CRYPTOJS_KEY || EnDondeMeVacunoPasswordKey,
+      JwtKey: process.env.JWT_KEY,
+      PasswordKey: process.env.CRYPTOJS_KEY,
     };
   }
 }

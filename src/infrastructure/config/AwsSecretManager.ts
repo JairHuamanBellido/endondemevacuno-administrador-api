@@ -15,8 +15,10 @@ export class AwsSecretManager {
   public session: SecretsManager;
 
   constructor() {
-    this.session = new SecretsManager({
-      region: 'us-east-2',
-    });
+    if (process.env.NODE_ENV !== 'development') {
+      this.session = new SecretsManager({
+        region: 'us-east-2',
+      });
+    }
   }
 }
