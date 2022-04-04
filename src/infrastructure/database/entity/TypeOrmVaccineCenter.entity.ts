@@ -7,6 +7,7 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
+import { TypeOrmInflow } from './TypeOrmInflow.entity';
 import { TypeOrmInventory } from './TypeOrmInventory.entity';
 import { TypeOrmResponsable } from './TypeOrmResponsable.entity';
 import { TypeOrmUbigeo } from './TypeOrmUbigeo.entity';
@@ -26,6 +27,9 @@ export class TypeOrmVaccineCenter {
 
   @OneToMany(() => TypeOrmInventory, (inventory) => inventory.vaccine_center)
   inventory?: TypeOrmInventory[];
+
+  @OneToMany(() => TypeOrmInflow, (inflow) => inflow.vaccine_center)
+  inflow?: TypeOrmInflow[];
 
   @Column({ name: 'name', type: 'varchar', length: 255 })
   name: string;
