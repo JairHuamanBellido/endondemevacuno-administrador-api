@@ -7,6 +7,7 @@ import { CreateResponsableService } from '@domain/Responsable/service/CreateResp
 import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/FlagCreateVaccinationCenterService';
 import { GenerateCredentialService } from '@domain/Responsable/service/GenerateCredentialsService';
 import { GetAllResponsableService } from '@domain/Responsable/service/GetAllResponsablesService';
+import { GetPersonalInformationService } from '@domain/Responsable/service/GetPersonalInformationService';
 import { UpdateResponsableService } from '@domain/Responsable/service/UpdateResponsableService';
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { IVaccineCenterRepository } from '@domain/VaccineCenter/interface/IVaccineCenterRepository.interface';
@@ -101,10 +102,16 @@ const serviceProviders: Provider[] = [
       VaccineCenterDITokens.IVaccineCenterRepository,
     ],
   },
+  {
+    provide: ResponsableDITokens.GetPersonalInformationService,
+    useFactory: (responsableRepository: IResponsableRepository) =>
+      new GetPersonalInformationService(responsableRepository),
+    inject: [ResponsableDITokens.IResponsableRepository],
+  },
 ];
 @Module({
   providers: [...persistenceProvider, ...serviceProviders],
   controllers: [ResponsablesController],
-  exports: [...serviceProviders]
+  exports: [...serviceProviders],
 })
-export class ResponsableModule { }
+export class ResponsableModule {}

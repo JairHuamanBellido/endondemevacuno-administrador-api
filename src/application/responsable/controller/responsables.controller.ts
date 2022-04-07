@@ -21,6 +21,7 @@ import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/
 import { HttpUser } from '@domain/Authentication/security/decorator/HttpUser';
 import { HttpJwtPayload } from '@domain/Authentication/security/type/HttpAuthType';
 import { HttpRestApiFlagResponse } from '@core/types/HttpRestApiFlagResponse';
+import { GetPersonalInformationService } from '@domain/Responsable/service/GetPersonalInformationService';
 @ApiTags('responsables')
 @Controller('responsables')
 @ApiBearerAuth()
@@ -34,6 +35,8 @@ export class ResponsablesController {
     private readonly updateResponsableService: UpdateResponsableService,
     @Inject(ResponsableDITokens.FlagCreateVaccinationCenterService)
     private readonly flagCreateVaccinationCenterService: FlagCreateVaccinationCenterService,
+    @Inject(ResponsableDITokens.GetPersonalInformationService)
+    private readonly getPersonalInformationService: GetPersonalInformationService,
   ) {}
 
   @ApiResponse({
@@ -90,5 +93,20 @@ export class ResponsablesController {
     return await this.flagCreateVaccinationCenterService.execute(
       httpUser.responsableId,
     );
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get personal information of responsable',
+    type: ResponsableAdapter,
+  })
+  @HttpAuth(UserRole.RESPONSABLE)
+  @Get('/me')
+  public async getPersonalInformation(@HttpUser() httpUser: HttpJwtPayload) {
+    const responsable = await this.getPersonalInformationService.execute(
+      httpUser.responsableId,
+    );
+
+    return ResponsableAdapter.newFromResponsable(responsable);
   }
 }
