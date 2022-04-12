@@ -4,16 +4,16 @@ import { TypeOrmVaccineCenterMapper } from './TypeOrmVaccineCenterMapper';
 
 export class TypeOrmInflowMapper {
   public static toDomainEntity(ormInflow: TypeOrmInflow): Inflow {
-    const domainInvetory = new Inflow({
+    const domainInflow = new Inflow({
       id: ormInflow.id,
       peopleEntering: ormInflow.people_entering,
-      vaccineCenter: TypeOrmVaccineCenterMapper.toDomainEntity(
-        ormInflow.vaccine_center,
-      ),
+      vaccineCenter: ormInflow.vaccine_center
+        ? TypeOrmVaccineCenterMapper.toDomainEntity(ormInflow.vaccine_center)
+        : undefined,
       createdAt: ormInflow.created_at,
     });
 
-    return domainInvetory;
+    return domainInflow;
   }
 
   public static toDomainsEntities(ormInflows: TypeOrmInflow[]): Inflow[] {
@@ -21,7 +21,7 @@ export class TypeOrmInflowMapper {
   }
 
   public static toOrmEntity(inflow: Inflow): TypeOrmInflow {
-    const ormInventory: TypeOrmInflow = {
+    const ormInflow: TypeOrmInflow = {
       created_at: inflow.createdAt,
       id: inflow.id,
       people_entering: inflow.peopleEntering,
@@ -30,6 +30,6 @@ export class TypeOrmInflowMapper {
       ),
     };
 
-    return ormInventory;
+    return ormInflow;
   }
 }

@@ -7,6 +7,7 @@ import { ResponsableModule } from './application/responsable/responsable.module'
 import { VaccineCenterModule } from './application/vaccine-center/vaccine-center.module';
 import { UbigeoModule } from './application/ubigeo/ubigeo.module';
 import { VaccinesModule } from './application/vaccines/vaccines.module';
+import { InflowModule } from './application/inflow/inflow.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { VaccinesModule } from './application/vaccines/vaccines.module';
     VaccineCenterModule,
     UbigeoModule,
     VaccinesModule,
+    InflowModule,
   ],
   controllers: [AppController],
   providers: [AppService],

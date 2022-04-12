@@ -44,4 +44,21 @@ export abstract class TypeOrmInfloRepository
       });
     }
   }
+
+  public async createEntity(inflow: Inflow): Promise<Inflow> {
+    const ormInflow = TypeOrmInflowMapper.toOrmEntity(inflow);
+    const newEntity = await this.createQueryBuilder(this.inflowAlias)
+      .insert()
+      .into(TypeOrmInflow)
+      .values([ormInflow])
+      .execute();
+
+    const query = this.buildInventoryQueryBuilder();
+    this.extendQueryWithFindByAnyCoincidence(query, {
+      id: newEntity.identifiers[0].id,
+    });
+
+    const queryResult = await query.getOne();
+    return TypeOrmInflowMapper.toDomainEntity(queryResult);
+  }
 }
