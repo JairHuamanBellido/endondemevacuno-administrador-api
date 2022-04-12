@@ -12,6 +12,7 @@ import { VaccineDITokens } from '@domain/Vaccine/di/VaccineDITokens';
 import { IVaccineRepository } from '@domain/Vaccine/interface/IVaccineRepository';
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { IVaccineCenterRepository } from '@domain/VaccineCenter/interface/IVaccineCenterRepository.interface';
+import { IVaccineCenterRepositoryDynamoDB } from '@domain/VaccineCenter/interface/IvaccineCenterRepositoryDynamoDB.interface';
 import { CreateVaccineCenterService } from '@domain/VaccineCenter/service/CreateVaccineCenterService';
 import { GetVaccineCenterByResponsableService } from '@domain/VaccineCenter/service/GetVaccineCenterByResponsableService';
 import { UpdateVaccineCenterService } from '@domain/VaccineCenter/service/UpdateVaccineCenterService';
@@ -19,6 +20,7 @@ import { TypeOrmInventoryRepository } from '@infrastructure/database/repositorie
 import { TypeormResponsableRepository } from '@infrastructure/database/repositories/ResponsableRepository';
 import { TypeOrmUbigeoRepository } from '@infrastructure/database/repositories/UbigeoRepository';
 import { TypeormVaccinateCenterRepository } from '@infrastructure/database/repositories/VaccineCenterRepository';
+import { VaccineCenterRepositoryDynamoDB } from '@infrastructure/database/repositories/VaccineCenterRepositoryDynamoDB';
 import { TypeOrmVaccineRepository } from '@infrastructure/database/repositories/VaccineRepository';
 import { Module, Provider } from '@nestjs/common';
 import { Connection } from 'typeorm';
@@ -55,6 +57,10 @@ const persistenceProvicer: Provider[] = [
       connection.getCustomRepository(TypeOrmVaccineRepository),
     inject: [Connection],
   },
+  {
+    provide: VaccineCenterDITokens.IVaccineCenterRepositoryDynamoDB,
+    useFactory: () => new VaccineCenterRepositoryDynamoDB(),
+  },
 ];
 
 const serviceProviders: Provider[] = [
@@ -79,16 +85,19 @@ const serviceProviders: Provider[] = [
       inventoryRepository: IIventoryRepository,
       vaccineRepository: IVaccineRepository,
       vaccineCenterRepository: IVaccineCenterRepository,
+      vaccineCenterRepositoryDynamoDB: IVaccineCenterRepositoryDynamoDB,
     ) =>
       new CreateInventoryService(
         inventoryRepository,
         vaccineRepository,
         vaccineCenterRepository,
+        vaccineCenterRepositoryDynamoDB,
       ),
     inject: [
       InventoryDITokens.IIventoryRepository,
       VaccineDITokens.IVaccineRepository,
       VaccineCenterDITokens.IVaccineCenterRepository,
+      VaccineCenterDITokens.IVaccineCenterRepositoryDynamoDB,
     ],
   },
   {
@@ -99,6 +108,7 @@ const serviceProviders: Provider[] = [
       responsableRepository: IResponsableRepository,
       flagCreateVaccineCenter: FlagCreateVaccinationCenterService,
       createInventoryService: CreateInventoryService,
+      vaccineCenterRepositoryDynamoDB: IVaccineCenterRepositoryDynamoDB,
     ) =>
       new CreateVaccineCenterService(
         vaccineCenterRepository,
@@ -106,6 +116,7 @@ const serviceProviders: Provider[] = [
         responsableRepository,
         flagCreateVaccineCenter,
         createInventoryService,
+        vaccineCenterRepositoryDynamoDB,
       ),
     inject: [
       VaccineCenterDITokens.IVaccineCenterRepository,
@@ -113,13 +124,23 @@ const serviceProviders: Provider[] = [
       ResponsableDITokens.IResponsableRepository,
       ResponsableDITokens.FlagCreateVaccinationCenterService,
       InventoryDITokens.CreateInventoryService,
+      VaccineCenterDITokens.IVaccineCenterRepositoryDynamoDB,
     ],
   },
   {
     provide: VaccineCenterDITokens.UpdateVaccineCenterService,
-    useFactory: (vaccineCenterRepository: IVaccineCenterRepository) =>
-      new UpdateVaccineCenterService(vaccineCenterRepository),
-    inject: [VaccineCenterDITokens.IVaccineCenterRepository],
+    useFactory: (
+      vaccineCenterRepository: IVaccineCenterRepository,
+      vaccineCenterRepositoryDynamoDB: IVaccineCenterRepositoryDynamoDB,
+    ) =>
+      new UpdateVaccineCenterService(
+        vaccineCenterRepository,
+        vaccineCenterRepositoryDynamoDB,
+      ),
+    inject: [
+      VaccineCenterDITokens.IVaccineCenterRepository,
+      VaccineCenterDITokens.IVaccineCenterRepositoryDynamoDB,
+    ],
   },
   {
     provide: VaccineCenterDITokens.GetVaccineCenterByResponsableService,
@@ -135,9 +156,21 @@ const serviceProviders: Provider[] = [
   },
   {
     provide: InventoryDITokens.DeleteVaccineToInventoryService,
-    useFactory: (inventoryRepository: IIventoryRepository) =>
-      new DeleteVaccineToInventoryService(inventoryRepository),
-    inject: [InventoryDITokens.IIventoryRepository],
+    useFactory: (
+      inventoryRepository: IIventoryRepository,
+      vaccineCenterRepository: IVaccineCenterRepository,
+      vaccineCenterRepositoryDynamoDB: IVaccineCenterRepositoryDynamoDB,
+    ) =>
+      new DeleteVaccineToInventoryService(
+        inventoryRepository,
+        vaccineCenterRepository,
+        vaccineCenterRepositoryDynamoDB,
+      ),
+    inject: [
+      InventoryDITokens.IIventoryRepository,
+      VaccineCenterDITokens.IVaccineCenterRepository,
+      VaccineCenterDITokens.IVaccineCenterRepositoryDynamoDB,
+    ],
   },
 ];
 

@@ -124,6 +124,7 @@ export class VaccineCenterController {
     const newInventory = await this.createInventoryService.execute(
       payload,
       vaccineCenterId,
+      true,
     );
 
     return InventoryAdapter.newFromInventory(newInventory);
@@ -134,9 +135,15 @@ export class VaccineCenterController {
     description: 'Remove vaccine from vaccine center',
   })
   @HttpAuth(UserRole.RESPONSABLE)
-  @Delete('/inventory/:id')
-  public async removeVaccineFromInventory(@Param('id') id: string) {
-    const isDelete = await this.deleteVaccineToInventoryService.execute(id);
+  @Delete('/:vaccineCenterId/inventory/:id')
+  public async removeVaccineFromInventory(
+    @Param('id') id: string,
+    @Param('vaccineCenterId') vaccineCenterId: string,
+  ) {
+    const isDelete = await this.deleteVaccineToInventoryService.execute(
+      vaccineCenterId,
+      id,
+    );
 
     return isDelete;
   }

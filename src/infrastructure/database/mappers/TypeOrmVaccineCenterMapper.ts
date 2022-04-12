@@ -1,5 +1,6 @@
 import { VaccineCenter } from '@domain/VaccineCenter/model/VaccineCenter';
 import { TypeOrmVaccineCenter } from '../entity/TypeOrmVaccineCenter.entity';
+import { TypeOrmInvetoryMapper } from './TypeOrmInventoryMapper';
 import { TypeOrmResponsableMapper } from './TypeOrmResponsableMapper';
 import { TypeOrmUbigeoMapper } from './TypeOrmUbigeoMapper';
 

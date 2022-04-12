@@ -15,4 +15,7 @@ export class VaccineCenterDITokens {
   public static readonly IVaccineCenterRepository: unique symbol = Symbol(
     'IVaccineCenterRepository',
   );
+
+  public static readonly IVaccineCenterRepositoryDynamoDB: unique symbol =
+    Symbol('IVaccineCenterRepositoryDynamoDB');
 }

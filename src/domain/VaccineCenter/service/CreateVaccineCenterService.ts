@@ -9,6 +9,7 @@ import { IResponsableRepository } from '@domain/Responsable/interface/IReponsabl
 import { FlagCreateVaccinationCenterService } from '@domain/Responsable/service/FlagCreateVaccinationCenterService';
 import { CreateInventoryService } from '@domain/Inventory/services/CreateInventoryService';
 import { Inventory } from '@domain/Inventory/model/Invetory';
+import { IVaccineCenterRepositoryDynamoDB } from '../interface/IvaccineCenterRepositoryDynamoDB.interface';
 
 export class CreateVaccineCenterService {
   constructor(
@@ -17,6 +18,7 @@ export class CreateVaccineCenterService {
     private readonly responsableRepository: IResponsableRepository,
     private readonly validateIfAbleToCreate: FlagCreateVaccinationCenterService,
     private readonly createInventoryService: CreateInventoryService,
+    private readonly vaccineCenterDynamoDBRepository: IVaccineCenterRepositoryDynamoDB,
   ) {}
 
   public async execute(payload: Payload, responsableId: string) {
@@ -55,7 +57,7 @@ export class CreateVaccineCenterService {
       ubigeo,
     );
 
-    let inventories: Inventory[] = [];
+    const inventories: Inventory[] = [];
 
     for await (const iterator of payload.vaccines) {
       const newInventory = await this.createInventoryService.execute(
@@ -65,6 +67,8 @@ export class CreateVaccineCenterService {
       inventories.push(newInventory);
     }
     newVaccineCenter.inventories = inventories;
+
+    await this.vaccineCenterDynamoDBRepository.create(newVaccineCenter);
 
     return newVaccineCenter;
   }
