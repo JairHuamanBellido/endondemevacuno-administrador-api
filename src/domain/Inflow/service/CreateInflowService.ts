@@ -15,7 +15,7 @@ export class CreateInflowService {
     });
 
     const date = new Date(payload.createdAt);
-    date.setHours(date.getHours() + 5);
+    date.setHours(date.getHours());
     const inflow = new Inflow({
       createdAt: date,
       id: uuidv4(),
