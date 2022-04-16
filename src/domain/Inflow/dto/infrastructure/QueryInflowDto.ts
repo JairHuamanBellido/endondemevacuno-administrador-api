@@ -4,4 +4,5 @@ export interface QueryInflowDto {
   endDate?: string;
   peopleEntering?: number;
   createdAt?: Date;
+  vaccineCenterId?: string;
 }

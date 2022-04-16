@@ -1,6 +1,7 @@
 import { InflowDITokens } from '@domain/Inflow/di/InflowDITokens';
 import { IInflowRepository } from '@domain/Inflow/interface/IInflowRepository.interface';
 import { CreateInflowService } from '@domain/Inflow/service/CreateInflowService';
+import { GetInflowBetweenDatesService } from '@domain/Inflow/service/GetInflowBetweenDatesService';
 import { VaccineCenterDITokens } from '@domain/VaccineCenter/di/VaccineCenterDITokens';
 import { IVaccineCenterRepository } from '@domain/VaccineCenter/interface/IVaccineCenterRepository.interface';
 import { TypeOrmInfloRepository } from '@infrastructure/database/repositories/InflowRepository';
@@ -35,6 +36,12 @@ const serviceProviders: Provider[] = [
       VaccineCenterDITokens.IVaccineCenterRepository,
       InflowDITokens.IInflowRepository,
     ],
+  },
+  {
+    provide: InflowDITokens.GetInflowBetweenDatesService,
+    useFactory: (inflowRepository: IInflowRepository) =>
+      new GetInflowBetweenDatesService(inflowRepository),
+    inject: [InflowDITokens.IInflowRepository],
   },
 ];
 @Module({

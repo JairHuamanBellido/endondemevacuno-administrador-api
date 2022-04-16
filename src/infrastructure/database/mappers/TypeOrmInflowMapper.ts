@@ -4,13 +4,15 @@ import { TypeOrmVaccineCenterMapper } from './TypeOrmVaccineCenterMapper';
 
 export class TypeOrmInflowMapper {
   public static toDomainEntity(ormInflow: TypeOrmInflow): Inflow {
+    const date = ormInflow.created_at;
+    date.setHours(date.getHours() - 5);
     const domainInflow = new Inflow({
       id: ormInflow.id,
-      peopleEntering: ormInflow.people_entering,
+      peopleEntering: parseInt(ormInflow.people_entering.toString()),
       vaccineCenter: ormInflow.vaccine_center
         ? TypeOrmVaccineCenterMapper.toDomainEntity(ormInflow.vaccine_center)
         : undefined,
-      createdAt: ormInflow.created_at,
+      createdAt: date,
     });
 
     return domainInflow;
