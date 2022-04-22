@@ -10,7 +10,7 @@ export class DynamoDBVaccineCenterMapper {
       created_at: { S: vaccineCenter.createdAt.toISOString() },
       direction: { S: vaccineCenter.direction },
       diris: { S: vaccineCenter.diris },
-      distrito: { S: vaccineCenter.ubigeo.district },
+      district: { S: vaccineCenter.ubigeo.district },
       id: { S: vaccineCenter.id },
       is_available: { BOOL: vaccineCenter.isAvailable },
       localization: { S: vaccineCenter.localization },
