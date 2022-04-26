@@ -1,6 +1,5 @@
 import { VaccineCenter } from '@domain/VaccineCenter/model/VaccineCenter';
 import { TypeOrmVaccineCenter } from '../entity/TypeOrmVaccineCenter.entity';
-import { TypeOrmInvetoryMapper } from './TypeOrmInventoryMapper';
 import { TypeOrmResponsableMapper } from './TypeOrmResponsableMapper';
 import { TypeOrmUbigeoMapper } from './TypeOrmUbigeoMapper';
 
@@ -15,6 +14,7 @@ export class TypeOrmVaccineCenterMapper {
       diris: ormVaccineCenter.diris,
       id: ormVaccineCenter.id,
       isAvailable: ormVaccineCenter.is_available,
+      capacity: ormVaccineCenter.capacity,
       localization: ormVaccineCenter.localization,
       name: ormVaccineCenter.name,
       responsable: ormVaccineCenter.responsable
@@ -38,6 +38,7 @@ export class TypeOrmVaccineCenterMapper {
       diris: vaccineCenter.diris,
       id: vaccineCenter.id,
       is_available: vaccineCenter.isAvailable,
+      capacity: vaccineCenter.capacity,
       localization: vaccineCenter.localization,
       name: vaccineCenter.name,
       responsable: vaccineCenter.responsable

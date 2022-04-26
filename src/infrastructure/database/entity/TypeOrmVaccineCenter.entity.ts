@@ -40,6 +40,9 @@ export class TypeOrmVaccineCenter {
   @Column({ name: 'business_hour', type: 'varchar', length: 50 })
   business_hour: string;
 
+  @Column({ name: 'capacity', type: 'int' })
+  capacity: number;
+
   @Column({ name: 'is_available', type: 'bool' })
   is_available: boolean;
 

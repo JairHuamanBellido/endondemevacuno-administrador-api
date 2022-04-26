@@ -8,6 +8,7 @@ export type CreateVaccineCenterEntityPayload = {
   businessHour: string;
   isAvailable: boolean;
   localization: string;
+  capacity: number;
   diris: string;
   createdAt: Date;
   ubigeo: Ubigeo;

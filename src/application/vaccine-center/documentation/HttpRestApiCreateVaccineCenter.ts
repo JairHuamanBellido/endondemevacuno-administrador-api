@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEmpty, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { HttpRestApiCreateInventory } from './HttpRestApiCreateInventory';
 
 export class HttpRestApiCreateVaccineCenter {
@@ -33,8 +33,13 @@ export class HttpRestApiCreateVaccineCenter {
   @IsNotEmpty()
   ubigeoId: string;
 
-  @ApiProperty({type: [HttpRestApiCreateInventory] })
+  @ApiProperty({ type: [HttpRestApiCreateInventory] })
   @IsArray({})
   @IsNotEmpty()
   vaccines: HttpRestApiCreateInventory[];
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  capacity: number;
 }

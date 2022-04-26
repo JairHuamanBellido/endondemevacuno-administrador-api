@@ -49,6 +49,7 @@ export class CreateVaccineCenterService {
       name: payload.name,
       responsable: responsable,
       ubigeo: ubigeo,
+      capacity: payload.capacity,
     });
 
     const newVaccineCenter = await this.vaccineCenterRepository.createEntity(

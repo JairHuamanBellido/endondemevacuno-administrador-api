@@ -15,6 +15,7 @@ export class VaccineCenter {
   private _createdAt: Date;
   private _ubigeo: Ubigeo;
   private _responable: Responsable;
+  private _capacity: number;
   private _inventories: Inventory[];
 
   constructor(payload: CreateVaccineCenterEntityPayload) {
@@ -22,6 +23,7 @@ export class VaccineCenter {
     this._createdAt = payload.createdAt;
     this._direction = payload.direction;
     this._diris = payload.diris;
+    this._capacity = payload.capacity;
     this._id = payload.id;
     this._isAvailable = payload.isAvailable;
     this._localization = payload.localization;
@@ -71,6 +73,9 @@ export class VaccineCenter {
 
   get inventories() {
     return this._inventories;
+  }
+  get capacity() {
+    return this._capacity;
   }
 
   set inventories(inventories: Inventory[]) {
