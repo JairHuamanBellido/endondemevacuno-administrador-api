@@ -26,6 +26,9 @@ export type VaccineCenterDynamoDB = {
   is_available: {
     BOOL: boolean;
   };
+  capacity: {
+    S: string;
+  };
   name: {
     S: string;
   };

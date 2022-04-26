@@ -15,6 +15,7 @@ export class DynamoDBVaccineCenterMapper {
       is_available: { BOOL: vaccineCenter.isAvailable },
       localization: { S: vaccineCenter.localization },
       name: { S: vaccineCenter.name },
+      capacity: { S: vaccineCenter.capacity.toString() },
       vaccines: vaccineCenter.inventories
         ? {
             L: vaccineCenter.inventories.map((e) => ({ S: e.vaccine.name })),
