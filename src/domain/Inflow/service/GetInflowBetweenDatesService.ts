@@ -48,9 +48,7 @@ export class GetInflowBetweenDatesService {
     const roundToNearest5 = (x) => Math.round(x / 5) * 5;
 
     const currentStartDate = new Date(startDate);
-    const currentEndDate = new Date(startDate);
-    this.standardizeTimeToPeru(currentStartDate);
-    this.standardizeTimeToPeru(currentEndDate);
+    const currentEndDate = new Date(endDate);
     const startHour = currentStartDate.getHours();
     const endHour = currentEndDate.getHours();
     const startMinute = roundToNearest5(currentStartDate.getMinutes());
@@ -98,6 +96,7 @@ export class GetInflowBetweenDatesService {
   }
 
   private standardizeTimeToPeru(date: Date) {
+    // +5 Porque la base de datos está 5 horas antes de la hora de Perú
     date.setHours(date.getHours() + 5);
   }
   private getInflowPerWeek(inflow: Inflow[]) {
@@ -172,22 +171,24 @@ export class GetInflowBetweenDatesService {
 
     inflow.forEach((e) => {
       let timePeriod;
+
+      const currentDate = new Date(e.createdAt);
+      this.standardizeTimeToPeru(currentDate);
       if (period === 'hour') {
         const hourParsed = this.addZeroToLeft(
-          new Date(e.createdAt).getUTCHours().toString(),
+          currentDate.getHours().toString(),
         );
-
         const minuteParsed = this.addZeroToLeft(
-          new Date(e.createdAt).getMinutes().toString(),
+          currentDate.getMinutes().toString(),
         );
 
         timePeriod = `${hourParsed}:${minuteParsed}`;
       } else if (period === 'day') {
-        timePeriod = new Date(e.createdAt).getUTCHours();
+        timePeriod = currentDate.getHours();
       } else if (period === 'week') {
-        timePeriod = new Date(e.createdAt).getUTCDay();
+        timePeriod = currentDate.getDay();
       } else if (period === 'month') {
-        timePeriod = new Date(e.createdAt).getUTCDate();
+        timePeriod = currentDate.getDate();
       }
 
       if (inflowByPeriod[timePeriod] === undefined) {
