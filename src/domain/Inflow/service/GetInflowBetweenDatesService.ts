@@ -47,10 +47,14 @@ export class GetInflowBetweenDatesService {
 
     const roundToNearest5 = (x) => Math.round(x / 5) * 5;
 
-    const startHour = new Date(startDate).getHours();
-    const endHour = new Date(endDate).getHours();
-    const startMinute = roundToNearest5(new Date(startDate).getMinutes());
-    const lastMinute = roundToNearest5(new Date(endDate).getMinutes()) - 5;
+    const currentStartDate = new Date(startDate);
+    const currentEndDate = new Date(startDate);
+    this.standardizeTimeToPeru(currentStartDate);
+    this.standardizeTimeToPeru(currentEndDate);
+    const startHour = currentStartDate.getHours();
+    const endHour = currentEndDate.getHours();
+    const startMinute = roundToNearest5(currentStartDate.getMinutes());
+    const lastMinute = roundToNearest5(currentEndDate.getMinutes()) - 5;
 
     const groupInflowByMinutes = this.groupInflowByPeriod(inflow, 'hour');
     let currentHour = startHour;
@@ -93,6 +97,9 @@ export class GetInflowBetweenDatesService {
     return inflowPerHour;
   }
 
+  private standardizeTimeToPeru(date: Date) {
+    date.setHours(date.getHours() + 5);
+  }
   private getInflowPerWeek(inflow: Inflow[]) {
     const arr = Array.from({ length: 6 }, (_, index) => index + 1);
 
